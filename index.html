@@ -47,16 +47,7 @@
     <p>عمل الطالبة: تالين المالكي | إشراف: المعلمة منيرة الدوسري</p>
   </footer>
 
-  <div class="mobile-nav">
-    <a href="index.html" class="mobile-nav-button clickable">
-      <div class="mobile-nav-icon">🏠</div>
-      <div>الرئيسية</div>
-    </a>
-    <a href="quiz.html" class="mobile-nav-button clickable">
-      <div class="mobile-nav-icon">📝</div>
-      <div>الاختبار</div>
-    </a>
-  </div>
+  <!-- تم إزالة شريط التنقل الثابت بناءً على طلب المستخدم -->
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -66,19 +57,7 @@
       // إنشاء بطاقة للنبي محمد ﷺ
       createAncestorCard('محمد', ancestorsTree);
       
-      // إضافة مستمع للنقر على بطاقات الأجداد
-      ancestorsTree.addEventListener('click', function(e) {
-        const card = e.target.closest('.ancestor-card');
-        if (card) {
-          const name = card.getAttribute('data-name');
-          showAncestorInfo(name, e);
-          
-          // تشغيل صوت النقرة
-          if (typeof playClickSound === 'function') {
-            playClickSound();
-          }
-        }
-      });
+      // لم نعد بحاجة إلى مستمع الأحداث هنا لأننا أضفنا مستمعات مباشرة لكل بطاقة
     });
 
     // دالة إنشاء بطاقة جد
@@ -95,6 +74,18 @@
         <div class="ancestor-icon ${iconClass}"></div>
         <div class="ancestor-name">${name}</div>
       `;
+      
+      // إضافة مستمع للنقر على البطاقة مباشرة
+      card.addEventListener('click', function(e) {
+        e.stopPropagation(); // منع انتشار الحدث للعناصر الأب
+        const name = this.getAttribute('data-name');
+        showAncestorInfo(name, e);
+        
+        // تشغيل صوت النقرة
+        if (typeof playClickSound === 'function') {
+          playClickSound();
+        }
+      });
       
       container.appendChild(card);
       
