@@ -1,0 +1,270 @@
+/* تحسينات إضافية للتوافق مع مختلف المتصفحات والأجهزة */
+
+/* إصلاحات لمتصفح Safari */
+@supports (-webkit-touch-callout: none) {
+  .ancestor-card {
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .answers-box button {
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .result-button, .print-button button {
+    -webkit-appearance: none;
+  }
+  
+  /* إصلاحات إضافية لسفاري على أجهزة آبل */
+  body {
+    -webkit-text-size-adjust: 100%;
+  }
+  
+  .tooltip {
+    -webkit-transform: translateZ(0);
+  }
+  
+  .card, .quiz-container, .certificate-container {
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+  }
+  
+  /* إصلاح مشكلة الخطوط في سفاري */
+  @font-face {
+    font-family: 'Amiri';
+    src: url('https://fonts.gstatic.com/s/amiri/v17/J7aRnpd8CGxBHpUrtLMA7w.woff2') format('woff2');
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Reem Kufi';
+    src: url('https://fonts.gstatic.com/s/reemkufi/v10/2sDcZGJLip7W2J7v7wQzaGW5.woff2') format('woff2');
+    font-display: swap;
+  }
+  
+  /* إصلاح مشكلة الصوت في سفاري */
+  audio {
+    -webkit-user-select: none;
+  }
+  
+  /* إصلاح مشكلة الحركة في سفاري */
+  .ancestor-card:hover, .card:hover, .start-button a:hover, .result-button:hover {
+    -webkit-transform: translateY(-5px);
+  }
+}
+
+/* إصلاحات لمتصفح Firefox */
+@-moz-document url-prefix() {
+  .tooltip {
+    max-width: 280px;
+  }
+}
+
+/* تحسينات للأجهزة المحمولة الصغيرة */
+@media (max-width: 360px) {
+  body {
+    font-size: 13px;
+  }
+  
+  header h1 {
+    font-size: 1.6em;
+  }
+  
+  .card {
+    padding: 12px;
+  }
+  
+  .ancestor-card {
+    padding: 5px 10px;
+    margin: 2px;
+  }
+  
+  .ancestor-card img {
+    width: 20px;
+    height: 20px;
+    margin-left: 4px;
+  }
+  
+  .tooltip {
+    max-width: 220px;
+    padding: 10px;
+  }
+  
+  .answers-box {
+    gap: 10px;
+  }
+  
+  .answers-box button {
+    padding: 12px 8px;
+  }
+  
+  .result-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .certificate h1 {
+    font-size: 1.4em;
+  }
+  
+  .certificate .student-name {
+    font-size: 1.2em;
+  }
+}
+
+/* تحسينات للأجهزة اللوحية */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .ancestors-tree {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .ancestor-card {
+    margin: 5px;
+  }
+}
+
+/* تحسينات للشاشات الكبيرة */
+@media (min-width: 1200px) {
+  .cards {
+    max-width: 1000px;
+  }
+  
+  .quiz-container {
+    max-width: 900px;
+  }
+  
+  .certificate-container {
+    max-width: 900px;
+  }
+}
+
+/* تحسينات للطباعة */
+@media print {
+  body {
+    background: white;
+    font-size: 14pt;
+  }
+  
+  .certificate {
+    box-shadow: none;
+    border: 1px solid #ddd;
+    padding: 20px;
+  }
+  
+  .certificate h1 {
+    font-size: 24pt;
+  }
+  
+  .certificate .student-name {
+    font-size: 20pt;
+  }
+}
+
+/* تحسينات لوضع الشاشة العمودي والأفقي */
+@media (orientation: portrait) {
+  .ancestors-tree {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+  header {
+    padding: 10px;
+  }
+  
+  header h1 {
+    font-size: 1.5em;
+  }
+  
+  .datetime {
+    font-size: 0.9em;
+    padding: 5px;
+  }
+  
+  .cards {
+    padding: 10px;
+    gap: 15px;
+  }
+  
+  .card {
+    padding: 15px;
+  }
+  
+  .quiz-container {
+    margin: 15px auto;
+    padding: 15px;
+  }
+  
+  .question-box {
+    padding: 12px;
+    margin-bottom: 15px;
+  }
+  
+  footer {
+    margin-top: 20px;
+    padding: 8px;
+  }
+}
+
+/* تحسينات لدعم الخطوط في مختلف المتصفحات */
+@font-face {
+  font-family: 'Amiri Fallback';
+  src: local('Amiri'), local('Arial');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Reem Kufi Fallback';
+  src: local('Reem Kufi'), local('Arial');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --font-title: 'Reem Kufi', 'Reem Kufi Fallback', sans-serif;
+  --font-body: 'Amiri', 'Amiri Fallback', serif;
+}
+
+/* تحسينات لدعم اللمس على الأجهزة اللمسية */
+@media (hover: none) {
+  .ancestor-card:active {
+    transform: scale(0.98);
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+  
+  .answers-box button:active {
+    transform: scale(0.98);
+  }
+  
+  .start-button a:active, .result-button:active, .print-button button:active {
+    transform: scale(0.98);
+  }
+}
+
+/* تحسينات لدعم الوضع المظلم */
+@media (prefers-color-scheme: dark) {
+  .certificate {
+    background-color: #f8f8f8;
+  }
+}
+
+/* تحسينات لدعم تفضيلات الحركة المخفضة */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .card:hover, .ancestor-card:hover, .start-button a:hover, .result-button:hover {
+    transform: none !important;
+  }
+}

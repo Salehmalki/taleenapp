@@ -4,50 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>نسب النبي محمد ﷺ</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    body {
-      font-size: 18px;
-      line-height: 1.7;
-    }
-    .has-info {
-      color: #2e5f3e;
-      font-weight: bold;
-      cursor: pointer;
-      border-bottom: 1px dashed #888;
-    }
-    .tooltip {
-      position: absolute;
-      background-color: #fefefe;
-      border: 1px solid #ccc;
-      padding: 10px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      display: none;
-      z-index: 1000;
-      max-width: 250px;
-    }
-    .datetime {
-      text-align: center;
-      font-size: 1.2em;
-      color: #ffffffcc;
-      background-color: #3e5525;
-      padding: 10px;
-      border-radius: 0 0 8px 8px;
-      margin-bottom: 15px;
-    }
-    @media (max-width: 600px) {
-      body {
-        font-size: 16px;
-      }
-      .cards {
-        padding: 10px;
-      }
-      .card {
-        padding: 15px;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="assets/css/enhanced-style.css" />
+  <link rel="stylesheet" href="assets/css/compatibility.css" />
+  <script src="assets/js/audio.js" defer></script>
+  <script src="assets/js/ios-compatibility.js" defer></script>
 </head>
 <body>
   <header>
@@ -58,19 +18,74 @@
   <main class="cards">
     <section class="card green">
       <h2>من جهة أبيه:</h2>
-      <p>
-        محمد بن <span class="has-info" data-name="عبد الله">عبد الله</span> بن
-        <span class="has-info" data-name="عبد المطلب">عبد المطلب</span> بن هاشم بن عبد مناف بن قصي بن
-        <span class="has-info" data-name="كلاب">كلاب</span> بن مرة بن كعب بن لؤي بن غالب بن فهر (وهو قريش) بن مالك بن النضر بن كنانة بن خزيمة بن مدركة بن إلياس بن مضر بن نزار بن معد بن عدنان.
-      </p>
+      <div class="ancestors-tree">
+        <div class="ancestor-card father" data-name="محمد">
+          <img src="assets/images/icon_father.svg" alt="أيقونة" />
+          <span>محمد</span>
+        </div>
+        بن
+        <div class="ancestor-card father" data-name="عبد الله">
+          <img src="assets/images/icon_father.svg" alt="أيقونة" />
+          <span>عبد الله</span>
+        </div>
+        بن
+        <div class="ancestor-card grandfather" data-name="عبد المطلب">
+          <img src="assets/images/icon_grandfather.svg" alt="أيقونة" />
+          <span>عبد المطلب</span>
+        </div>
+        بن
+        <div class="ancestor-card ancestor" data-name="هاشم">
+          <img src="assets/images/icon_ancestor.svg" alt="أيقونة" />
+          <span>هاشم</span>
+        </div>
+        بن
+        <div class="ancestor-card ancestor" data-name="عبد مناف">
+          <img src="assets/images/icon_ancestor.svg" alt="أيقونة" />
+          <span>عبد مناف</span>
+        </div>
+        بن
+        <div class="ancestor-card ancestor" data-name="قصي">
+          <img src="assets/images/icon_ancestor.svg" alt="أيقونة" />
+          <span>قصي</span>
+        </div>
+        بن
+        <div class="ancestor-card ancestor" data-name="كلاب">
+          <img src="assets/images/icon_ancestor.svg" alt="أيقونة" />
+          <span>كلاب</span>
+        </div>
+        بن مرة بن كعب بن لؤي بن غالب بن فهر (وهو قريش) بن مالك بن النضر بن كنانة بن خزيمة بن مدركة بن إلياس بن مضر بن نزار بن معد بن عدنان.
+      </div>
     </section>
 
     <section class="card blue">
       <h2>من جهة أمه:</h2>
-      <p>
-        <span class="has-info" data-name="آمنة">آمنة</span> بنت وهب بن عبد مناف بن زهرة بن
-        <span class="has-info" data-name="كلاب">كلاب</span> بن مرة بن كعب بن لؤي بن غالب بن فهر (وهو قريش) بن مالك بن النضر بن كنانة بن خزيمة بن مدركة بن إلياس بن مضر بن نزار بن معد بن عدنان.
-      </p>
+      <div class="ancestors-tree">
+        <div class="ancestor-card mother" data-name="آمنة">
+          <img src="assets/images/icon_mother.svg" alt="أيقونة" />
+          <span>آمنة</span>
+        </div>
+        بنت
+        <div class="ancestor-card ancestor" data-name="وهب">
+          <img src="assets/images/icon_ancestor.svg" alt="أيقونة" />
+          <span>وهب</span>
+        </div>
+        بن
+        <div class="ancestor-card ancestor" data-name="عبد مناف">
+          <img src="assets/images/icon_ancestor.svg" alt="أيقونة" />
+          <span>عبد مناف</span>
+        </div>
+        بن
+        <div class="ancestor-card ancestor" data-name="زهرة">
+          <img src="assets/images/icon_ancestor.svg" alt="أيقونة" />
+          <span>زهرة</span>
+        </div>
+        بن
+        <div class="ancestor-card ancestor" data-name="كلاب">
+          <img src="assets/images/icon_ancestor.svg" alt="أيقونة" />
+          <span>كلاب</span>
+        </div>
+        بن مرة بن كعب بن لؤي بن غالب بن فهر (وهو قريش) بن مالك بن النضر بن كنانة بن خزيمة بن مدركة بن إلياس بن مضر بن نزار بن معد بن عدنان.
+      </div>
     </section>
 
     <section class="card beige">
@@ -86,37 +101,70 @@
     </div>
   </main>
 
-  <div class="tooltip" id="tooltip"></div>
+  <div class="tooltip" id="tooltip">
+    <h3 class="tooltip-title"></h3>
+    <div class="tooltip-content"></div>
+    <div class="tooltip-source"></div>
+  </div>
 
   <footer>
     <p>عمل الطالبة: تالين المالكي | إشراف: المعلمة منيرة الدوسري</p>
   </footer>
 
   <script>
-    const infoData = {
-      "عبد الله": "هو والد النبي ﷺ، كان من خيرة شباب قريش وأحسنهم خلقًا.",
-      "عبد المطلب": "هو جد النبي ﷺ، وكان سيدًا مطاعًا في قريش، وساقي الحجيج.",
-      "كلاب": "جد النبي ﷺ السادس، يلتقي عنده النسب من جهة الأب والأم.",
-      "آمنة": "هي والدة النبي ﷺ، من أفضل نساء قريش نسبًا وشرفًا."
-    };
-
-    const tooltip = document.getElementById("tooltip");
-
-    document.querySelectorAll(".has-info").forEach(el => {
-      el.addEventListener("click", (e) => {
-        const name = el.dataset.name;
-        tooltip.textContent = infoData[name];
-        tooltip.style.display = "block";
-        tooltip.style.top = (e.pageY + 10) + "px";
-        tooltip.style.left = (e.pageX - 100) + "px";
-      });
-    });
-
-    document.addEventListener("click", (e) => {
-      if (!e.target.classList.contains("has-info")) {
-        tooltip.style.display = "none";
+    // بيانات الأجداد والمعلومات عنهم
+    const ancestorsData = {
+      "محمد": {
+        title: "النبي محمد ﷺ",
+        content: "هو محمد بن عبد الله بن عبد المطلب، خاتم الأنبياء والمرسلين، ولد في مكة المكرمة عام الفيل (حوالي 570م).",
+        source: "المصدر: كتاب التربية الإسلامية للصف الخامس الابتدائي"
+      },
+      "عبد الله": {
+        title: "عبد الله بن عبد المطلب",
+        content: "هو والد النبي ﷺ، كان من خيرة شباب قريش وأحسنهم خلقًا. توفي وعمر النبي ﷺ في بطن أمه شهرين.",
+        source: "المصدر: كتاب التربية الإسلامية للصف الخامس الابتدائي"
+      },
+      "عبد المطلب": {
+        title: "عبد المطلب بن هاشم",
+        content: "هو جد النبي ﷺ، وكان سيدًا مطاعًا في قريش، وساقي الحجيج. هو الذي كفل النبي ﷺ بعد وفاة أمه حتى بلغ من العمر ثماني سنوات.",
+        source: "المصدر: كتاب التربية الإسلامية للصف الخامس الابتدائي"
+      },
+      "هاشم": {
+        title: "هاشم بن عبد مناف",
+        content: "هو جد النبي ﷺ الثاني، وإليه تنسب قبيلة بني هاشم. كان سيدًا في قومه، وهو أول من سن رحلتي الشتاء والصيف لقريش.",
+        source: "المصدر: كتاب السيرة النبوية المبسطة للأطفال"
+      },
+      "عبد مناف": {
+        title: "عبد مناف بن قصي",
+        content: "من أجداد النبي ﷺ، كان من سادات قريش وأشرافهم، وكانت إليه السقاية والرفادة.",
+        source: "المصدر: كتاب السيرة النبوية المبسطة للأطفال"
+      },
+      "قصي": {
+        title: "قصي بن كلاب",
+        content: "من أجداد النبي ﷺ، وهو الذي جمع قبائل قريش وأسكنهم في مكة بعد تفرقهم، وبنى دار الندوة التي كانت تجتمع فيها قريش.",
+        source: "المصدر: كتاب السيرة النبوية المبسطة للأطفال"
+      },
+      "كلاب": {
+        title: "كلاب بن مرة",
+        content: "من أجداد النبي ﷺ، وهو الجد الذي يلتقي عنده نسب النبي ﷺ من جهة الأب والأم.",
+        source: "المصدر: كتاب التربية الإسلامية للصف الخامس الابتدائي"
+      },
+      "آمنة": {
+        title: "آمنة بنت وهب",
+        content: "هي والدة النبي ﷺ، من أفضل نساء قريش نسبًا وشرفًا. توفيت والنبي ﷺ في السادسة من عمره في الأبواء بين مكة والمدينة.",
+        source: "المصدر: كتاب التربية الإسلامية للصف الخامس الابتدائي"
+      },
+      "وهب": {
+        title: "وهب بن عبد مناف",
+        content: "هو والد آمنة أم النبي ﷺ، وكان سيد بني زهرة نسبًا وشرفًا.",
+        source: "المصدر: كتاب السيرة النبوية المبسطة للأطفال"
+      },
+      "زهرة": {
+        title: "زهرة بن كلاب",
+        content: "من أجداد النبي ﷺ من جهة أمه، وإليه تنسب قبيلة بني زهرة.",
+        source: "المصدر: كتاب السيرة النبوية المبسطة للأطفال"
       }
-    });
+    };
 
     // عرض التاريخ والوقت
     function updateDateTime() {
@@ -128,6 +176,58 @@
 
     updateDateTime();
     setInterval(updateDateTime, 1000);
+
+    // إضافة التفاعلية للبطاقات
+    const tooltip = document.getElementById("tooltip");
+    const ancestorCards = document.querySelectorAll(".ancestor-card");
+
+    ancestorCards.forEach(card => {
+      card.addEventListener("click", (e) => {
+        const name = card.dataset.name;
+        const data = ancestorsData[name];
+        
+        if (data) {
+          // تعيين محتوى التلميح
+          tooltip.querySelector(".tooltip-title").textContent = data.title;
+          tooltip.querySelector(".tooltip-content").textContent = data.content;
+          tooltip.querySelector(".tooltip-source").textContent = data.source;
+          
+          // عرض التلميح وتحديد موقعه
+          tooltip.style.display = "block";
+          
+          // حساب موقع التلميح بناءً على موقع البطاقة
+          const cardRect = card.getBoundingClientRect();
+          const tooltipHeight = tooltip.offsetHeight;
+          
+          // تحديد ما إذا كان يجب عرض التلميح فوق أو تحت البطاقة
+          if (cardRect.top > tooltipHeight + 20) {
+            // عرض التلميح فوق البطاقة
+            tooltip.style.top = (window.scrollY + cardRect.top - tooltipHeight - 10) + "px";
+          } else {
+            // عرض التلميح تحت البطاقة
+            tooltip.style.top = (window.scrollY + cardRect.bottom + 10) + "px";
+          }
+          
+          // تحديد الموقع الأفقي للتلميح
+          tooltip.style.left = (window.scrollX + cardRect.left) + "px";
+          
+          // تشغيل الصوت
+          playAncestorAudio(name);
+        }
+      });
+    });
+
+    // إخفاء التلميح عند النقر في أي مكان آخر
+    document.addEventListener("click", (e) => {
+      if (!e.target.closest(".ancestor-card") && !e.target.closest(".tooltip")) {
+        tooltip.style.display = "none";
+      }
+    });
+
+    // صوت ترحيبي عند تحميل الصفحة (سيتم تنفيذه لاحقًا)
+    window.addEventListener("load", () => {
+      // playWelcomeAudio();
+    });
   </script>
 </body>
 </html>

@@ -4,19 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>اختبار نسب النبي ﷺ</title>
-  <link rel="stylesheet" href="style.css">
-  <style>
-    body { font-family: 'Segoe UI', sans-serif; background-color: #fdfcf8; margin: 0; padding: 0; text-align: right; direction: rtl; }
-    header { background-color: #556b2f; color: white; padding: 20px; text-align: center; font-size: 1.5em; }
-    .quiz-container { max-width: 700px; margin: 30px auto; padding: 20px; background: #fffdf6; border-radius: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-    .question-box { background: #f0f6ec; padding: 15px; border-right: 5px solid #6b8e23; border-radius: 10px; margin-bottom: 20px; font-weight: bold; }
-    .answers-box { display: flex; flex-direction: column; gap: 15px; }
-    .answers-box button { padding: 15px; font-size: 1.1em; border: none; border-radius: 10px; background-color: #eef2e5; cursor: pointer; transition: 0.3s ease; text-align: center; }
-    .answers-box button:hover { background-color: #dbe6c3; }
-    #timer { text-align: center; font-size: 1.1em; margin-top: 20px; color: #444; }
-    #result { text-align: center; font-size: 1.3em; background-color: #fff8e1; padding: 15px; border-radius: 10px; display: none; margin-top: 20px; }
-    footer { background-color: #eee7d5; text-align: center; padding: 10px; font-size: 0.9em; color: #333; margin-top: 40px; border-top: 1px solid #ccc; }
-  </style>
+  <link rel="stylesheet" href="assets/css/enhanced-style.css">
+  <link rel="stylesheet" href="assets/css/compatibility.css">
+  <script src="assets/js/audio.js" defer></script>
+  <script src="assets/js/ios-compatibility.js" defer></script>
 </head>
 <body>
   <header>
@@ -52,6 +43,26 @@
         q: "من هو والد النبي محمد ﷺ؟",
         a: ["أبو طالب", "حمزة بن عبد المطلب", "عبد الله بن عبد المطلب", "العباس بن عبد المطلب"],
         correct: 2
+      },
+      {
+        q: "من هو جد النبي ﷺ من جهة أمه؟",
+        a: ["عبد الله بن وهب", "عبد مناف بن زهرة", "وهب بن عبد مناف", "زهرة بن كلاب"],
+        correct: 2
+      },
+      {
+        q: "في أي جد يلتقي النسب؟",
+        a: ["عبد مناف بن قصي", "هاشم بن عبد مناف", "كلاب بن مرة", "قصي بن كلاب"],
+        correct: 2
+      },
+      {
+        q: "إلى أي بطن تنتمي والدة النبي ﷺ؟",
+        a: ["بنو هاشم", "بنو أمية", "بنو زهرة", "بنو مخزوم"],
+        correct: 2
+      },
+      {
+        q: "من هو الجد الذي جمع قريشًا في مكة؟",
+        a: ["عبد المطلب", "هاشم", "قصي", "عبد مناف"],
+        correct: 2
       }
     ];
 
@@ -60,11 +71,9 @@
     let timeLeft = 120;
     let timer;
 
-    const correctSound = new Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_6b48e5d953.mp3");
-    const wrongSound = new Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_d464769a1f.mp3");
-
     window.onload = () => {
-  questions.sort(() => Math.random() - 0.5);
+      // ترتيب الأسئلة عشوائيًا
+      questions.sort(() => Math.random() - 0.5);
       showQuestion();
       startTimer();
     };
@@ -82,28 +91,49 @@
       document.getElementById("question").textContent = q.q;
       const answersDiv = document.getElementById("answers");
       answersDiv.innerHTML = "";
-      q.a.forEach((ans, index) => {
+      
+      // ترتيب الإجابات عشوائيًا مع الاحتفاظ بالإجابة الصحيحة
+      const correctAnswer = q.a[q.correct];
+      const shuffledAnswers = [...q.a].sort(() => Math.random() - 0.5);
+      const newCorrectIndex = shuffledAnswers.indexOf(correctAnswer);
+      
+      shuffledAnswers.forEach((ans, index) => {
         const btn = document.createElement("button");
         btn.textContent = ans;
-        btn.onclick = () => checkAnswer(index);
+        btn.onclick = () => checkAnswer(index, newCorrectIndex);
         answersDiv.appendChild(btn);
       });
     }
 
-    function checkAnswer(selected) {
-      const correct = questions[current].correct;
-      if (selected === correct) {
-        correctSound.play();
+    function checkAnswer(selected, correctIndex) {
+      const buttons = document.querySelectorAll("#answers button");
+      
+      if (selected === correctIndex) {
+        // الإجابة صحيحة
+        buttons[selected].classList.add("correct");
+        playCorrectSound();
         score++;
       } else {
-        wrongSound.play();
+        // الإجابة خاطئة
+        buttons[selected].classList.add("incorrect");
+        buttons[correctIndex].classList.add("correct");
+        playIncorrectSound();
       }
-      current++;
-      if (current < questions.length) {
-        setTimeout(showQuestion, 500);
-      } else {
-        endQuiz();
-      }
+      
+      // تعطيل جميع الأزرار بعد الإجابة
+      buttons.forEach(btn => {
+        btn.disabled = true;
+      });
+      
+      // الانتقال إلى السؤال التالي بعد فترة قصيرة
+      setTimeout(() => {
+        current++;
+        if (current < questions.length) {
+          showQuestion();
+        } else {
+          endQuiz();
+        }
+      }, 1500);
     }
 
     function endQuiz() {
@@ -111,11 +141,25 @@
       document.getElementById("quizBox").style.display = "none";
       const result = document.getElementById("result");
       result.style.display = "block";
-      result.innerHTML = (score === questions.length ?
-        "<p>ممتاز! لقد أجبت على جميع الأسئلة بشكل صحيح!</p>" :
-        `<p>لقد أجبت على ${score} من ${questions.length} أسئلة.</p>`) +
-        '<div style="margin-top: 20px;"><a href="quiz.html" style="padding: 10px 20px; margin: 5px; background-color: #6b8e23; color: white; border-radius: 8px; text-decoration: none;">🔁 إعادة الاختبار</a>' +
-        '<a href="index.html" style="padding: 10px 20px; margin: 5px; background-color: #3b6e75; color: white; border-radius: 8px; text-decoration: none;">🏠 الصفحة الرئيسية</a></div>';
+      
+      let message = "";
+      if (score === questions.length) {
+        message = "<h2>ممتاز! 🎉</h2><p>لقد أجبت على جميع الأسئلة بشكل صحيح!</p>";
+        message += '<p><a href="certificate.html" class="result-button certificate">عرض الشهادة 🏆</a></p>';
+      } else if (score >= questions.length * 0.7) {
+        message = `<h2>أحسنت! 👏</h2><p>لقد أجبت على ${score} من ${questions.length} أسئلة بشكل صحيح.</p>`;
+      } else if (score >= questions.length * 0.5) {
+        message = `<h2>جيد! 👍</h2><p>لقد أجبت على ${score} من ${questions.length} أسئلة بشكل صحيح.</p>`;
+      } else {
+        message = `<h2>حاول مرة أخرى! 💪</h2><p>لقد أجبت على ${score} من ${questions.length} أسئلة بشكل صحيح.</p>`;
+      }
+      
+      message += '<div class="result-buttons">' +
+        '<a href="quiz.html" class="result-button retry">🔁 إعادة الاختبار</a>' +
+        '<a href="index.html" class="result-button home">🏠 الصفحة الرئيسية</a>' +
+        '</div>';
+      
+      result.innerHTML = message;
     }
   </script>
 </body>

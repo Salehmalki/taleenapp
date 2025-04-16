@@ -1,0 +1,586 @@
+/* enhanced-style.css: تنسيقات المشروع المحسنة */
+
+/* استيراد الخطوط العربية من Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Reem+Kufi:wght@400;500;600;700&display=swap');
+
+:root {
+  --color-green-dark: #556b2f;
+  --color-green-medium: #6b8e23;
+  --color-green-light: #f0f6ec;
+  --color-blue-dark: #3b6e75;
+  --color-blue-medium: #5a9ca6;
+  --color-blue-light: #eef7f8;
+  --color-beige-dark: #c0a060;
+  --color-beige-medium: #d9c38b;
+  --color-beige-light: #fdf9f0;
+  --font-title: 'Reem Kufi', sans-serif;
+  --font-body: 'Amiri', serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--color-beige-light) url('../images/islamic_pattern.svg') repeat;
+  background-size: 200px;
+  color: #2e2e2e;
+  margin: 0;
+  padding: 0;
+  direction: rtl;
+  text-align: right;
+  line-height: 1.7;
+  font-size: 18px;
+}
+
+header {
+  background-color: var(--color-green-dark);
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-family: var(--font-title);
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-image: url('../images/frame_pattern.svg');
+  background-size: 100px;
+  background-repeat: repeat;
+}
+
+header h1 {
+  margin: 0;
+  padding: 10px;
+  font-size: 2.2em;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+footer {
+  background-color: var(--color-beige-light);
+  text-align: center;
+  padding: 15px;
+  font-size: 0.9em;
+  color: #333;
+  margin-top: 40px;
+  border-top: 1px solid var(--color-beige-medium);
+  font-family: var(--font-title);
+}
+
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  padding: 25px;
+  max-width: 900px;
+  margin: 20px auto;
+}
+
+.card {
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  background-color: #fefefe;
+  border-right: 5px solid #ccc;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: url('../images/islamic_pattern.svg');
+  background-size: 100px;
+  opacity: 0.05;
+  pointer-events: none;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card h2 {
+  font-family: var(--font-title);
+  color: var(--color-green-dark);
+  margin-top: 0;
+  border-bottom: 2px solid var(--color-beige-medium);
+  padding-bottom: 10px;
+  display: inline-block;
+}
+
+.green { 
+  border-right-color: var(--color-green-medium); 
+  background: var(--color-green-light); 
+}
+
+.blue { 
+  border-right-color: var(--color-blue-dark); 
+  background: var(--color-blue-light); 
+}
+
+.beige { 
+  border-right-color: var(--color-beige-dark); 
+  background: var(--color-beige-light); 
+}
+
+.start-button {
+  text-align: center;
+  margin: 40px 0 20px;
+}
+
+.start-button a {
+  text-decoration: none;
+  background-color: var(--color-green-medium);
+  color: white;
+  padding: 15px 30px;
+  border-radius: 50px;
+  font-size: 1.2em;
+  font-family: var(--font-title);
+  transition: all 0.3s ease;
+  display: inline-block;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.start-button a::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: linear-gradient(to right, rgba(255,255,255,0.1), rgba(255,255,255,0));
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
+}
+
+.start-button a:hover {
+  background-color: var(--color-green-dark);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.start-button a:hover::after {
+  transform: translateX(100%);
+}
+
+.datetime {
+  text-align: center;
+  font-size: 1.1em;
+  color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(62, 85, 37, 0.8);
+  padding: 10px;
+  border-radius: 0 0 8px 8px;
+  margin-bottom: 15px;
+  font-family: var(--font-title);
+}
+
+/* تنسيقات البطاقات التفاعلية */
+.ancestor-card {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--color-beige-light);
+  border: 1px solid var(--color-beige-medium);
+  border-radius: 50px;
+  padding: 8px 15px;
+  margin: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: var(--font-title);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.ancestor-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.ancestor-card img {
+  width: 30px;
+  height: 30px;
+  margin-left: 8px;
+}
+
+.ancestor-card.father {
+  background-color: var(--color-green-light);
+  border-color: var(--color-green-medium);
+}
+
+.ancestor-card.mother {
+  background-color: var(--color-blue-light);
+  border-color: var(--color-blue-dark);
+}
+
+.ancestor-card.grandfather {
+  background-color: var(--color-beige-light);
+  border-color: var(--color-beige-dark);
+}
+
+.ancestor-card.ancestor {
+  background-color: rgba(240, 246, 236, 0.7);
+  border-color: var(--color-green-dark);
+}
+
+.tooltip {
+  position: absolute;
+  background-color: white;
+  border: 1px solid var(--color-beige-medium);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  display: none;
+  z-index: 1000;
+  max-width: 300px;
+  font-family: var(--font-body);
+  line-height: 1.6;
+  text-align: right;
+}
+
+.tooltip::before {
+  content: "";
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  border-width: 0 10px 10px;
+  border-style: solid;
+  border-color: transparent transparent var(--color-beige-medium);
+}
+
+.tooltip::after {
+  content: "";
+  position: absolute;
+  top: -8px;
+  right: 22px;
+  border-width: 0 8px 8px;
+  border-style: solid;
+  border-color: transparent transparent white;
+}
+
+.tooltip-title {
+  font-family: var(--font-title);
+  color: var(--color-green-dark);
+  margin-top: 0;
+  margin-bottom: 10px;
+  border-bottom: 1px solid var(--color-beige-medium);
+  padding-bottom: 5px;
+}
+
+.tooltip-source {
+  font-size: 0.8em;
+  color: #666;
+  font-style: italic;
+  margin-top: 10px;
+  text-align: left;
+}
+
+/* تنسيقات الاختبار */
+.quiz-container {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 25px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.quiz-container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: url('../images/islamic_pattern.svg');
+  background-size: 100px;
+  opacity: 0.03;
+  pointer-events: none;
+}
+
+.question-box {
+  background: var(--color-green-light);
+  border-right: 5px solid var(--color-green-medium);
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 25px;
+  font-weight: bold;
+  font-family: var(--font-title);
+  font-size: 1.2em;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.05);
+}
+
+.answers-box {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+.answers-box button {
+  padding: 15px;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--color-beige-light);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.1em;
+  font-family: var(--font-body);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.answers-box button:hover {
+  background-color: var(--color-beige-medium);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.answers-box button.correct {
+  background-color: #d4edda;
+  border: 1px solid #c3e6cb;
+  color: #155724;
+}
+
+.answers-box button.incorrect {
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  color: #721c24;
+}
+
+#timer {
+  margin-top: 20px;
+  font-size: 1.1em;
+  text-align: center;
+  font-family: var(--font-title);
+  color: var(--color-green-dark);
+  background-color: var(--color-green-light);
+  padding: 10px;
+  border-radius: 50px;
+  display: inline-block;
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+#result {
+  text-align: center;
+  font-size: 1.3em;
+  background-color: var(--color-beige-light);
+  padding: 25px;
+  border-radius: 15px;
+  display: none;
+  margin-top: 30px;
+  font-family: var(--font-title);
+  border: 2px solid var(--color-beige-medium);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.result-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.result-button {
+  padding: 12px 25px;
+  border-radius: 50px;
+  text-decoration: none;
+  color: white;
+  font-family: var(--font-title);
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.result-button.retry {
+  background-color: var(--color-green-medium);
+}
+
+.result-button.home {
+  background-color: var(--color-blue-dark);
+}
+
+.result-button.certificate {
+  background-color: var(--color-beige-dark);
+}
+
+.result-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  filter: brightness(1.1);
+}
+
+/* تنسيقات الشهادة */
+.certificate-container {
+  max-width: 800px;
+  margin: 30px auto;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  overflow: hidden;
+  position: relative;
+}
+
+.certificate {
+  background-image: url('../images/certificate_bg.svg');
+  background-size: cover;
+  padding: 50px;
+  text-align: center;
+  color: #333;
+}
+
+.certificate h1 {
+  font-family: var(--font-title);
+  color: var(--color-green-dark);
+  margin-bottom: 30px;
+  font-size: 2.5em;
+}
+
+.certificate h2 {
+  font-family: var(--font-title);
+  color: var(--color-beige-dark);
+  margin-bottom: 20px;
+  font-size: 1.8em;
+}
+
+.certificate p {
+  font-family: var(--font-body);
+  font-size: 1.2em;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+
+.certificate .student-name {
+  font-family: var(--font-title);
+  font-size: 2em;
+  color: var(--color-blue-dark);
+  margin: 30px 0;
+  padding: 10px;
+  display: inline-block;
+  border-bottom: 2px solid var(--color-beige-medium);
+}
+
+.certificate .date {
+  font-family: var(--font-body);
+  font-size: 1.1em;
+  color: #666;
+  margin-top: 40px;
+}
+
+.certificate .stamp {
+  width: 100px;
+  height: 100px;
+  margin: 20px auto;
+  background-color: var(--color-green-light);
+  border: 2px solid var(--color-green-medium);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-title);
+  color: var(--color-green-dark);
+  font-size: 0.9em;
+  transform: rotate(-5deg);
+}
+
+.print-button {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.print-button button {
+  background-color: var(--color-blue-dark);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 50px;
+  font-family: var(--font-title);
+  font-size: 1.1em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.print-button button:hover {
+  background-color: var(--color-blue-medium);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* تنسيقات متجاوبة */
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+  }
+  
+  .cards {
+    padding: 15px;
+  }
+  
+  .card {
+    padding: 20px;
+  }
+  
+  .answers-box {
+    grid-template-columns: 1fr;
+  }
+  
+  .certificate {
+    padding: 30px;
+  }
+  
+  .certificate h1 {
+    font-size: 2em;
+  }
+  
+  .certificate .student-name {
+    font-size: 1.6em;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 14px;
+  }
+  
+  header h1 {
+    font-size: 1.8em;
+  }
+  
+  .card {
+    padding: 15px;
+  }
+  
+  .start-button a {
+    padding: 12px 20px;
+    font-size: 1em;
+  }
+  
+  .ancestor-card {
+    padding: 6px 12px;
+    margin: 3px;
+  }
+  
+  .ancestor-card img {
+    width: 25px;
+    height: 25px;
+    margin-left: 5px;
+  }
+  
+  .tooltip {
+    max-width: 250px;
+  }
+  
+  .certificate {
+    padding: 20px;
+  }
+  
+  .certificate h1 {
+    font-size: 1.6em;
+  }
+  
+  .certificate .student-name {
+    font-size: 1.4em;
+  }
+}
