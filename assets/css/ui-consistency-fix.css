@@ -1,0 +1,167 @@
+/* تحسينات إضافية لتناسق واجهة المستخدم في متصفح سفاري */
+
+/* تحسين تناسق الأزرار */
+.clickable {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, -webkit-transform 0.3s ease;
+}
+
+.clickable.clicked {
+  transform: scale(0.95);
+  -webkit-transform: scale(0.95);
+}
+
+/* تحسين تناسق البطاقات */
+.ancestor-card {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* تحسين تناسق الخطوط */
+@supports (-webkit-touch-callout: none) {
+  body {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    -webkit-font-smoothing: antialiased;
+    font-smoothing: antialiased;
+  }
+}
+
+/* تحسين تناسق الأزرار في سفاري */
+@media not all and (min-resolution:.001dpcm) { 
+  @supports (-webkit-appearance:none) {
+    .answers-box button {
+      width: 100%;
+      margin: 8px 0;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.1);
+      background-color: #f9f9f9;
+      font-weight: 600;
+      text-align: center;
+    }
+    
+    .start-button a, .result-button {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      font-weight: 600;
+    }
+    
+    .mobile-nav-button {
+      flex: 1;
+      margin: 0 5px;
+      padding: 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+  }
+}
+
+/* تحسين تناسق شريط التنقل في سفاري */
+.mobile-nav {
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  background-color: rgba(255, 255, 255, 0.9);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* تحسين تناسق عداد الوقت في سفاري */
+.timer-container {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+.timer-progress {
+  -webkit-appearance: none;
+  appearance: none;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#timer-bar {
+  -webkit-transition: width 1s linear;
+  transition: width 1s linear;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* تحسين تناسق التلميحات في سفاري */
+.tooltip {
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+/* تحسين تناسق الشهادة في سفاري */
+.certificate {
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+/* تحسين تناسق الصور في سفاري */
+img {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
+/* تحسين تناسق الخلفيات في سفاري */
+body {
+  background-attachment: fixed;
+  -webkit-background-size: cover;
+  background-size: cover;
+}
+
+/* تحسين تناسق التمرير في سفاري */
+.ancestors-tree, .card-container {
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-width: thin;
+}
+
+/* تحسين تناسق الأيقونات في سفاري */
+.mobile-nav-icon {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* تحسين تناسق الحدود في سفاري */
+@media not all and (min-resolution:.001dpcm) { 
+  @supports (-webkit-appearance:none) {
+    .card, .quiz-container, .certificate-container, .ancestor-card, .tooltip {
+      border: 1px solid rgba(0, 0, 0, 0.1) !important;
+    }
+  }
+}
+
+/* تحسين تناسق الظلال في سفاري */
+@media not all and (min-resolution:.001dpcm) { 
+  @supports (-webkit-appearance:none) {
+    .card, .quiz-container, .certificate-container, .ancestor-card, .tooltip, .mobile-nav {
+      -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1) !important;
+    }
+  }
+}

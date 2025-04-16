@@ -1,0 +1,277 @@
+/* تحسينات شاملة للتوافق مع جميع المتصفحات المحمولة */
+
+/* إصلاحات عامة لجميع المتصفحات المحمولة */
+@media (max-width: 768px) {
+  /* تحسين حجم الخط والمسافات */
+  body {
+    font-size: 16px;
+    line-height: 1.6;
+    padding-bottom: 70px; /* مساحة لشريط التنقل */
+  }
+  
+  h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  p {
+    margin-bottom: 1rem;
+  }
+  
+  /* تحسين العرض والهوامش */
+  .card, .quiz-container, .certificate-container {
+    padding: 15px;
+    margin: 10px 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  /* تحسين الأزرار للمس */
+  .answers-box button, 
+  .start-button a, 
+  .result-button, 
+  .print-button button,
+  .mobile-nav-button,
+  .ancestor-card {
+    min-height: 44px; /* الحد الأدنى لارتفاع عناصر اللمس */
+    padding: 12px 15px;
+    margin: 8px 0;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 8px;
+    font-size: 1rem;
+  }
+  
+  /* تحسين شجرة النسب */
+  .ancestors-tree {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 10px 0;
+    width: 100%;
+  }
+  
+  /* تحسين بطاقات الأجداد */
+  .ancestor-card {
+    padding: 10px;
+    margin: 5px;
+    min-width: 100px;
+  }
+  
+  /* تحسين التلميحات */
+  .tooltip {
+    max-width: 90%;
+    left: 5% !important;
+    right: 5% !important;
+    width: 90%;
+    box-sizing: border-box;
+    z-index: 9999;
+  }
+  
+  /* تحسين عداد الوقت */
+  .timer-container {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+  
+  /* تحسين أزرار النتيجة */
+  .result-buttons {
+    flex-direction: column;
+  }
+  
+  /* تحسين الشهادة */
+  .certificate {
+    padding: 15px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+/* إصلاحات خاصة للأجهزة الصغيرة جداً */
+@media (max-width: 480px) {
+  body {
+    font-size: 15px;
+  }
+  
+  h1 {
+    font-size: 1.6rem;
+  }
+  
+  h2 {
+    font-size: 1.3rem;
+  }
+  
+  .ancestor-card {
+    padding: 8px;
+    margin: 4px;
+    min-width: 80px;
+  }
+  
+  .ancestor-icon {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* إصلاحات لمتصفح كروم على الأجهزة المحمولة */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  .clickable {
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+  }
+  
+  /* تحسين التمرير */
+  .ancestors-tree, .card-container {
+    -webkit-overflow-scrolling: touch;
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+  
+  /* تحسين الأزرار */
+  .answers-box button, 
+  .start-button a, 
+  .result-button, 
+  .print-button button,
+  .mobile-nav-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  
+  /* تحسين الرسوم المتحركة */
+  .clickable:active {
+    transform: scale(0.98);
+    -webkit-transform: scale(0.98);
+  }
+  
+  /* تحسين شريط التنقل */
+  .mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 0;
+  }
+}
+
+/* إصلاحات لمتصفح فايرفوكس على الأجهزة المحمولة */
+@-moz-document url-prefix() {
+  @media (max-width: 768px) {
+    .clickable {
+      outline: none;
+    }
+    
+    .mobile-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+    
+    .ancestors-tree {
+      scrollbar-width: thin;
+    }
+  }
+}
+
+/* إصلاحات لمتصفح سامسونج على الأجهزة المحمولة */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @supports (-webkit-overflow-scrolling: touch) {
+    select, textarea, input, button {
+      font-size: 16px; /* منع تكبير الشاشة عند التركيز */
+    }
+    
+    .mobile-nav {
+      padding-bottom: env(safe-area-inset-bottom, 8px); /* دعم الأجهزة ذات الحواف المنحنية */
+    }
+  }
+}
+
+/* تحسينات عامة للمس */
+.clickable {
+  cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* تحسين التفاعل مع اللمس */
+.clickable:active {
+  transform: scale(0.98);
+  -webkit-transform: scale(0.98);
+  transition: transform 0.1s;
+  -webkit-transition: -webkit-transform 0.1s;
+}
+
+/* تحسين شريط التنقل للأجهزة المحمولة */
+.mobile-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background-color: rgba(255, 255, 255, 0.95);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-around;
+  padding: 8px 0;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.mobile-nav-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #333;
+  flex: 1;
+  margin: 0 5px;
+  background-color: rgba(255, 255, 255, 0.8);
+}
+
+.mobile-nav-icon {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+}
+
+/* تحسين الصور والأيقونات */
+img, .ancestor-icon {
+  max-width: 100%;
+  height: auto;
+}
+
+/* تحسين التمرير */
+html, body {
+  overflow-x: hidden;
+  position: relative;
+  width: 100%;
+}
+
+/* تحسين الخطوط للأجهزة المحمولة */
+@media (max-width: 768px) {
+  @font-face {
+    font-family: 'Tajawal';
+    font-display: swap;
+    src: url('https://fonts.gstatic.com/s/tajawal/v9/Iura6YBj_oCad4k1nzGBC5xLhLFw4Q.woff2') format('woff2');
+  }
+  
+  @font-face {
+    font-family: 'Cairo';
+    font-display: swap;
+    src: url('https://fonts.gstatic.com/s/cairo/v28/SLXgc1nY6HkvangtZmpQdkhzfH5lkSs2SgRjCAGMQ1z0hOA-a1PiKg.woff2') format('woff2');
+  }
+}

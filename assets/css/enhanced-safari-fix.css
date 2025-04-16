@@ -1,0 +1,281 @@
+/* تحسينات شاملة للتوافق مع متصفح سفاري - نسخة محسنة */
+
+/* استيراد خطوط عربية واضحة */
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Cairo:wght@400;600;700;800&display=swap');
+
+:root {
+  --font-title: 'Cairo', 'Tajawal', sans-serif;
+  --font-body: 'Tajawal', 'Cairo', sans-serif;
+}
+
+/* إصلاحات عامة لجميع المتصفحات */
+body {
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.8;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, .ancestor-card, .start-button a, .result-button, .student-name {
+  font-family: var(--font-title);
+  font-weight: 700;
+}
+
+/* إصلاحات خاصة لمتصفح سفاري */
+@media not all and (min-resolution:.001dpcm) { 
+  @supports (-webkit-appearance:none) {
+    /* إصلاح مشكلة الخطوط في سفاري */
+    body {
+      font-family: var(--font-body) !important;
+      -webkit-font-smoothing: antialiased !important;
+    }
+    
+    h1, h2, h3, .ancestor-card, .start-button a, .result-button, .student-name {
+      font-family: var(--font-title) !important;
+      -webkit-font-smoothing: antialiased !important;
+    }
+    
+    /* إصلاح مشكلة العرض في سفاري */
+    .ancestors-tree {
+      display: inline-block;
+      width: 100%;
+      position: relative;
+    }
+    
+    /* إصلاح مشكلة التلميح في سفاري */
+    .tooltip {
+      position: fixed;
+      z-index: 9999;
+      max-width: 280px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+      -webkit-box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+    }
+    
+    /* إصلاح مشكلة الأزرار في سفاري */
+    .answers-box button, 
+    .start-button a, 
+    .result-button, 
+    .print-button button,
+    .mobile-nav-button {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      display: inline-block;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: manipulation;
+    }
+    
+    /* إصلاح مشكلة التحويلات في سفاري */
+    .card:hover, 
+    .ancestor-card:hover, 
+    .start-button a:hover, 
+    .result-button:hover,
+    .mobile-nav-button:hover {
+      -webkit-transform: translateY(-3px);
+      transform: translateY(-3px);
+      transition: transform 0.3s ease, -webkit-transform 0.3s ease;
+    }
+    
+    /* إصلاح مشكلة الحدود في سفاري */
+    .card, 
+    .quiz-container, 
+    .certificate-container,
+    .ancestor-card,
+    .answers-box button,
+    .result-button,
+    .mobile-nav-button {
+      border: 1px solid rgba(0,0,0,0.1);
+    }
+    
+    /* إصلاح مشكلة الظلال في سفاري */
+    .card, 
+    .quiz-container, 
+    .certificate-container, 
+    .tooltip,
+    .ancestor-card,
+    .answers-box button,
+    .result-button,
+    .mobile-nav {
+      -webkit-box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    /* إصلاح مشكلة الخلفيات في سفاري */
+    body, 
+    .card, 
+    .quiz-container, 
+    .certificate,
+    .ancestor-card,
+    .answers-box button,
+    .result-button,
+    .mobile-nav {
+      -webkit-background-size: cover;
+      background-size: cover;
+      background-attachment: scroll;
+    }
+    
+    /* إصلاح مشكلة الصوت في سفاري */
+    audio {
+      display: none;
+    }
+    
+    /* إصلاح مشكلة التمرير في سفاري */
+    body {
+      -webkit-overflow-scrolling: touch;
+      overflow-x: hidden;
+    }
+    
+    /* إصلاح مشكلة الشفافية في سفاري */
+    .tooltip,
+    .mobile-nav {
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+    
+    /* إصلاح مشكلة المرونة في سفاري */
+    .ancestors-tree,
+    .card-container,
+    .result-buttons {
+      display: -webkit-box;
+      display: -webkit-flex;
+      display: flex;
+      -webkit-flex-wrap: wrap;
+      flex-wrap: wrap;
+    }
+    
+    /* إصلاح مشكلة عداد الوقت في سفاري */
+    .timer-progress,
+    #timer-bar {
+      -webkit-appearance: none;
+      appearance: none;
+      border-radius: 10px;
+    }
+    
+    #timer-bar {
+      -webkit-transition: width 1s linear;
+      transition: width 1s linear;
+    }
+    
+    /* إصلاح مشكلة الرسوم المتحركة في سفاري */
+    @-webkit-keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+    
+    .timer-danger #timer-bar {
+      -webkit-animation: pulse 1s infinite;
+      animation: pulse 1s infinite;
+    }
+  }
+}
+
+/* تحسينات إضافية للتوافق مع iOS */
+@supports (-webkit-touch-callout: none) {
+  /* إصلاح مشكلة اللمس في iOS */
+  .ancestor-card, 
+  .answers-box button, 
+  .start-button a, 
+  .result-button, 
+  .print-button button,
+  .mobile-nav-button {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+  
+  /* إصلاح مشكلة التمرير في iOS */
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* إصلاح مشكلة الخطوط في iOS */
+  @font-face {
+    font-family: 'Tajawal';
+    src: url('https://fonts.gstatic.com/s/tajawal/v9/Iura6YBj_oCad4k1nzGBC5xLhLFw4Q.woff2') format('woff2');
+    font-display: swap;
+  }
+  
+  @font-face {
+    font-family: 'Cairo';
+    src: url('https://fonts.gstatic.com/s/cairo/v28/SLXgc1nY6HkvangtZmpQdkhzfH5lkSs2SgRjCAGMQ1z0hOA-a1PiKg.woff2') format('woff2');
+    font-display: swap;
+  }
+  
+  /* إصلاح مشكلة الثبات في iOS */
+  .mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+  
+  /* إصلاح مشكلة الأزرار في iOS */
+  .answers-box button, 
+  .start-button a, 
+  .result-button, 
+  .print-button button,
+  .mobile-nav-button {
+    padding: 12px 20px;
+  }
+}
+
+/* تحسين حجم الخط للأجهزة المختلفة */
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+  
+  h1 {
+    font-size: 1.8em;
+  }
+  
+  h2 {
+    font-size: 1.5em;
+  }
+  
+  .ancestor-card {
+    padding: 10px;
+  }
+  
+  .tooltip {
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  
+  h1 {
+    font-size: 1.6em;
+  }
+  
+  h2 {
+    font-size: 1.3em;
+  }
+  
+  .ancestor-card {
+    padding: 8px;
+    margin: 5px;
+  }
+  
+  .tooltip {
+    max-width: 220px;
+  }
+  
+  .answers-box button {
+    padding: 10px 15px;
+  }
+}

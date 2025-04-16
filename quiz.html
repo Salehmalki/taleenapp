@@ -2,211 +2,258 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>اختبار نسب النبي ﷺ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>اختبار نسب النبي محمد ﷺ</title>
   <link rel="stylesheet" href="assets/css/enhanced-style.css">
-  <link rel="stylesheet" href="assets/css/compatibility.css">
-  <link rel="stylesheet" href="assets/css/safari-fix.css">
-  <link rel="stylesheet" href="assets/css/improved-fonts.css">
+  <link rel="stylesheet" href="assets/css/enhanced-safari-fix.css">
+  <link rel="stylesheet" href="assets/css/ui-consistency-fix.css">
+  <link rel="stylesheet" href="assets/css/mobile-compatibility.css">
   <link rel="stylesheet" href="assets/css/countdown-timer.css">
-  <link rel="stylesheet" href="assets/css/mobile-navigation.css">
-  <script src="assets/js/improved-audio.js" defer></script>
-  <script src="assets/js/ios-compatibility.js" defer></script>
+  <script src="assets/js/simplified-audio.js" defer></script>
+  <script src="assets/js/enhanced-safari-compatibility.js" defer></script>
+  <script src="assets/js/mobile-compatibility.js" defer></script>
+  <script src="assets/js/updated-quiz-questions.js" defer></script>
 </head>
 <body>
   <header>
-    <h1>اختبر معلوماتك في نسب النبي ﷺ</h1>
+    <h1>اختبار نسب النبي محمد ﷺ</h1>
+    <p class="subtitle">اختبري معلوماتك عن نسب النبي محمد ﷺ</p>
   </header>
 
-  <main class="quiz-container">
-    <div id="quizBox">
-      <div id="question" class="question-box"></div>
-      <div id="answers" class="answers-box"></div>
-      <div id="timer" class="timer-container">
-        <div class="timer-label">الوقت المتبقي:</div>
-        <div class="timer-display">
-          <div class="timer-progress">
-            <div id="timer-bar"></div>
-          </div>
-          <div class="timer-text"><span id="time">120</span> ثانية</div>
+  <main>
+    <div class="quiz-container">
+      <div class="timer-container">
+        <div class="timer-progress">
+          <div id="timer-bar"></div>
+        </div>
+        <div id="timer-text">30</div>
+      </div>
+      
+      <div id="question-container">
+        <h2 id="question-text">جاري تحميل الأسئلة...</h2>
+        <div class="answers-box" id="answers-box">
+          <!-- سيتم إنشاء الإجابات ديناميكيًا باستخدام JavaScript -->
+        </div>
+      </div>
+      
+      <div id="result-container" style="display: none;">
+        <h2>نتيجة الاختبار</h2>
+        <p id="result-text"></p>
+        <div class="result-buttons">
+          <button id="retry-button" class="result-button retry clickable">إعادة الاختبار</button>
+          <a href="index.html" class="result-button home clickable">العودة للصفحة الرئيسية</a>
         </div>
       </div>
     </div>
-    <div id="result"></div>
   </main>
 
   <footer>
     <p>عمل الطالبة: تالين المالكي | إشراف: المعلمة منيرة الدوسري</p>
   </footer>
 
-  <div class="mobile-nav quiz-mobile-nav">
-    <a href="index.html" class="mobile-nav-button">
+  <div class="mobile-nav">
+    <a href="index.html" class="mobile-nav-button clickable">
       <div class="mobile-nav-icon">🏠</div>
       <div>الرئيسية</div>
     </a>
-    <a href="quiz.html" class="mobile-nav-button">
-      <div class="mobile-nav-icon">🔄</div>
-      <div>إعادة الاختبار</div>
+    <a href="quiz.html" class="mobile-nav-button clickable">
+      <div class="mobile-nav-icon">📝</div>
+      <div>الاختبار</div>
     </a>
   </div>
 
   <script>
-    const questions = [
-      {
-        q: "ما اسم والدة النبي ﷺ؟",
-        a: ["صفية بنت عبد المطلب", "أم سلمة", "آمنة بنت وهب", "زينب بنت جحش"],
-        correct: 2
-      },
-      {
-        q: "من هو جد النبي ﷺ من جهة أبيه؟",
-        a: ["عبد مناف", "هاشم", "عبد المطلب", "قصي"],
-        correct: 2
-      },
-      {
-        q: "من هو والد النبي محمد ﷺ؟",
-        a: ["أبو طالب", "حمزة بن عبد المطلب", "عبد الله بن عبد المطلب", "العباس بن عبد المطلب"],
-        correct: 2
-      },
-      {
-        q: "من هو جد النبي ﷺ من جهة أمه؟",
-        a: ["عبد الله بن وهب", "عبد مناف بن زهرة", "وهب بن عبد مناف", "زهرة بن كلاب"],
-        correct: 2
-      },
-      {
-        q: "في أي جد يلتقي النسب؟",
-        a: ["عبد مناف بن قصي", "هاشم بن عبد مناف", "كلاب بن مرة", "قصي بن كلاب"],
-        correct: 2
-      },
-      {
-        q: "إلى أي قبيلة تنتمي آمنة والدة النبي ﷺ؟",
-        a: ["بنو هاشم", "بنو أمية", "بنو زهرة", "بنو مخزوم"],
-        correct: 2
-      },
-      {
-        q: "من هو الجد الذي جمع قريشًا في مكة؟",
-        a: ["عبد المطلب", "هاشم", "قصي", "عبد مناف"],
-        correct: 2
-      }
-    ];
-
-    let current = 0;
-    let score = 0;
-    let timeLeft = 120;
-    let timer;
-
-    window.onload = () => {
-      // ترتيب الأسئلة عشوائيًا
-      questions.sort(() => Math.random() - 0.5);
-      showQuestion();
-      startTimer();
-    };
-
-    function startTimer() {
-      const totalTime = 120;
-      timeLeft = totalTime;
-      const timerBar = document.getElementById("timer-bar");
-      const timerContainer = document.getElementById("timer");
+    document.addEventListener('DOMContentLoaded', function() {
+      // متغيرات الاختبار
+      let currentQuestion = 0;
+      let score = 0;
+      let timer;
+      let timeLeft = 30;
+      let questions = [];
       
-      timer = setInterval(() => {
-        timeLeft--;
-        document.getElementById("time").textContent = timeLeft;
+      // تهيئة الاختبار
+      function initQuiz() {
+        // استخدام الأسئلة المحدثة
+        questions = quizQuestions.slice();
         
-        // تحديث شريط التقدم
-        const percentage = (timeLeft / totalTime) * 100;
-        timerBar.style.width = percentage + "%";
+        // ترتيب الأسئلة عشوائيًا
+        shuffleArray(questions);
         
-        // تغيير لون الشريط عندما يقترب الوقت من النهاية
-        if (timeLeft <= 30 && timeLeft > 10) {
-          timerContainer.classList.add("timer-warning");
-          timerContainer.classList.remove("timer-danger");
-        } else if (timeLeft <= 10) {
-          timerContainer.classList.add("timer-danger");
-          timerContainer.classList.remove("timer-warning");
-          // تشغيل صوت تنبيه عند اقتراب انتهاء الوقت
-          if (timeLeft === 10 || timeLeft === 5) {
-            playIncorrectSound();
+        // عرض السؤال الأول
+        showQuestion();
+        
+        // بدء العداد التنازلي
+        startTimer();
+      }
+      
+      // دالة عرض السؤال
+      function showQuestion() {
+        const questionData = questions[currentQuestion];
+        const questionText = document.getElementById('question-text');
+        const answersBox = document.getElementById('answers-box');
+        
+        // عرض نص السؤال
+        questionText.textContent = questionData.q;
+        
+        // إنشاء أزرار الإجابات
+        answersBox.innerHTML = '';
+        
+        // نسخ مصفوفة الإجابات وترتيبها عشوائيًا
+        const answers = questionData.a.slice();
+        shuffleArray(answers);
+        
+        // إنشاء أزرار الإجابات
+        answers.forEach(function(answer, index) {
+          const button = document.createElement('button');
+          button.className = 'clickable';
+          button.textContent = answer;
+          button.addEventListener('click', function() {
+            // التحقق من الإجابة
+            checkAnswer(answer, questionData);
+          });
+          answersBox.appendChild(button);
+        });
+        
+        // إعادة ضبط العداد التنازلي
+        resetTimer();
+      }
+      
+      // دالة التحقق من الإجابة
+      function checkAnswer(selectedAnswer, questionData) {
+        const correctAnswer = questionData.a[questionData.correct];
+        
+        if (selectedAnswer === correctAnswer) {
+          // الإجابة صحيحة
+          score++;
+          
+          // تشغيل صوت النقرة
+          if (typeof playClickSound === 'function') {
+            playClickSound();
+          }
+        } else {
+          // الإجابة خاطئة
+          // تشغيل صوت النقرة
+          if (typeof playClickSound === 'function') {
+            playClickSound();
           }
         }
         
-        if (timeLeft <= 0) endQuiz();
-      }, 1000);
-    }
-
-    function showQuestion() {
-      const q = questions[current];
-      document.getElementById("question").textContent = q.q;
-      const answersDiv = document.getElementById("answers");
-      answersDiv.innerHTML = "";
-      
-      // ترتيب الإجابات عشوائيًا مع الاحتفاظ بالإجابة الصحيحة
-      const correctAnswer = q.a[q.correct];
-      const shuffledAnswers = [...q.a].sort(() => Math.random() - 0.5);
-      const newCorrectIndex = shuffledAnswers.indexOf(correctAnswer);
-      
-      shuffledAnswers.forEach((ans, index) => {
-        const btn = document.createElement("button");
-        btn.textContent = ans;
-        btn.onclick = () => checkAnswer(index, newCorrectIndex);
-        answersDiv.appendChild(btn);
-      });
-    }
-
-    function checkAnswer(selected, correctIndex) {
-      const buttons = document.querySelectorAll("#answers button");
-      
-      if (selected === correctIndex) {
-        // الإجابة صحيحة
-        buttons[selected].classList.add("correct");
-        playCorrectSound();
-        score++;
-      } else {
-        // الإجابة خاطئة
-        buttons[selected].classList.add("incorrect");
-        buttons[correctIndex].classList.add("correct");
-        playIncorrectSound();
-      }
-      
-      // تعطيل جميع الأزرار بعد الإجابة
-      buttons.forEach(btn => {
-        btn.disabled = true;
-      });
-      
-      // الانتقال إلى السؤال التالي بعد فترة قصيرة
-      setTimeout(() => {
-        current++;
-        if (current < questions.length) {
+        // الانتقال إلى السؤال التالي أو إنهاء الاختبار
+        currentQuestion++;
+        
+        if (currentQuestion < questions.length) {
           showQuestion();
         } else {
           endQuiz();
         }
-      }, 1500);
-    }
-
-    function endQuiz() {
-      clearInterval(timer);
-      document.getElementById("quizBox").style.display = "none";
-      const result = document.getElementById("result");
-      result.style.display = "block";
-      
-      let message = "";
-      if (score === questions.length) {
-        message = "<h2>ممتاز! 🎉</h2><p>لقد أجبت على جميع الأسئلة بشكل صحيح!</p>";
-        message += '<p><a href="certificate.html" class="result-button certificate">عرض الشهادة 🏆</a></p>';
-      } else if (score >= questions.length * 0.7) {
-        message = `<h2>أحسنت! 👏</h2><p>لقد أجبت على ${score} من ${questions.length} أسئلة بشكل صحيح.</p>`;
-      } else if (score >= questions.length * 0.5) {
-        message = `<h2>جيد! 👍</h2><p>لقد أجبت على ${score} من ${questions.length} أسئلة بشكل صحيح.</p>`;
-      } else {
-        message = `<h2>حاول مرة أخرى! 💪</h2><p>لقد أجبت على ${score} من ${questions.length} أسئلة بشكل صحيح.</p>`;
       }
       
-      message += '<div class="result-buttons">' +
-        '<a href="quiz.html" class="result-button retry">🔁 إعادة الاختبار</a>' +
-        '<a href="index.html" class="result-button home">🏠 الصفحة الرئيسية</a>' +
-        '</div>';
+      // دالة إنهاء الاختبار
+      function endQuiz() {
+        // إيقاف العداد التنازلي
+        clearInterval(timer);
+        
+        // إخفاء حاوية الأسئلة وإظهار حاوية النتيجة
+        document.getElementById('question-container').style.display = 'none';
+        document.getElementById('result-container').style.display = 'block';
+        
+        // عرض النتيجة
+        const resultText = document.getElementById('result-text');
+        const percentage = Math.round((score / questions.length) * 100);
+        
+        resultText.textContent = `لقد حصلت على ${score} من ${questions.length} (${percentage}%)`;
+        
+        // إذا كانت النتيجة كاملة، عرض رابط الشهادة
+        if (score === questions.length) {
+          const resultButtons = document.querySelector('.result-buttons');
+          
+          // إنشاء زر الشهادة إذا لم يكن موجودًا
+          if (!document.getElementById('certificate-button')) {
+            const certificateButton = document.createElement('a');
+            certificateButton.id = 'certificate-button';
+            certificateButton.href = 'certificate.html';
+            certificateButton.className = 'result-button certificate clickable';
+            certificateButton.textContent = 'عرض الشهادة';
+            resultButtons.appendChild(certificateButton);
+          }
+        }
+        
+        // إضافة مستمع لزر إعادة الاختبار
+        document.getElementById('retry-button').addEventListener('click', function() {
+          // إعادة تهيئة الاختبار
+          currentQuestion = 0;
+          score = 0;
+          
+          // إخفاء حاوية النتيجة وإظهار حاوية الأسئلة
+          document.getElementById('result-container').style.display = 'none';
+          document.getElementById('question-container').style.display = 'block';
+          
+          // إعادة تشغيل الاختبار
+          initQuiz();
+        });
+      }
       
-      result.innerHTML = message;
-    }
+      // دالة بدء العداد التنازلي
+      function startTimer() {
+        const timerBar = document.getElementById('timer-bar');
+        const timerText = document.getElementById('timer-text');
+        const timerContainer = document.querySelector('.timer-container');
+        
+        // إعادة ضبط العداد التنازلي
+        timeLeft = 30;
+        timerText.textContent = timeLeft;
+        timerBar.style.width = '100%';
+        timerContainer.classList.remove('timer-warning', 'timer-danger');
+        
+        // بدء العداد التنازلي
+        timer = setInterval(function() {
+          timeLeft--;
+          timerText.textContent = timeLeft;
+          timerBar.style.width = (timeLeft / 30 * 100) + '%';
+          
+          // تغيير لون العداد عندما يقترب الوقت من النهاية
+          if (timeLeft <= 10 && timeLeft > 5) {
+            timerContainer.classList.add('timer-warning');
+            timerContainer.classList.remove('timer-danger');
+          } else if (timeLeft <= 5) {
+            timerContainer.classList.remove('timer-warning');
+            timerContainer.classList.add('timer-danger');
+          }
+          
+          // إذا انتهى الوقت، الانتقال إلى السؤال التالي
+          if (timeLeft <= 0) {
+            clearInterval(timer);
+            
+            // الانتقال إلى السؤال التالي أو إنهاء الاختبار
+            currentQuestion++;
+            
+            if (currentQuestion < questions.length) {
+              showQuestion();
+            } else {
+              endQuiz();
+            }
+          }
+        }, 1000);
+      }
+      
+      // دالة إعادة ضبط العداد التنازلي
+      function resetTimer() {
+        clearInterval(timer);
+        startTimer();
+      }
+      
+      // دالة ترتيب المصفوفة عشوائيًا
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+      }
+      
+      // بدء الاختبار
+      initQuiz();
+    });
   </script>
 </body>
 </html>
