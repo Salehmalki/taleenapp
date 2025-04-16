@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>نسب النبي محمد ﷺ</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-size: 18px;
+      line-height: 1.7;
+    }
+    .has-info {
+      color: #2e5f3e;
+      font-weight: bold;
+      cursor: pointer;
+      border-bottom: 1px dashed #888;
+    }
+    .tooltip {
+      position: absolute;
+      background-color: #fefefe;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: none;
+      z-index: 1000;
+      max-width: 250px;
+    }
+    .datetime {
+      text-align: center;
+      font-size: 1.2em;
+      color: #ffffffcc;
+      background-color: #3e5525;
+      padding: 10px;
+      border-radius: 0 0 8px 8px;
+      margin-bottom: 15px;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 16px;
+      }
+      .cards {
+        padding: 10px;
+      }
+      .card {
+        padding: 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🌿 رحلة في نسب النبي محمد ﷺ</h1>
+    <div class="datetime" id="datetime"></div>
+  </header>
+
+  <main class="cards">
+    <section class="card green">
+      <h2>من جهة أبيه:</h2>
+      <p>
+        محمد بن <span class="has-info" data-name="عبد الله">عبد الله</span> بن
+        <span class="has-info" data-name="عبد المطلب">عبد المطلب</span> بن هاشم بن عبد مناف بن قصي بن
+        <span class="has-info" data-name="كلاب">كلاب</span> بن مرة بن كعب بن لؤي بن غالب بن فهر (وهو قريش) بن مالك بن النضر بن كنانة بن خزيمة بن مدركة بن إلياس بن مضر بن نزار بن معد بن عدنان.
+      </p>
+    </section>
+
+    <section class="card blue">
+      <h2>من جهة أمه:</h2>
+      <p>
+        <span class="has-info" data-name="آمنة">آمنة</span> بنت وهب بن عبد مناف بن زهرة بن
+        <span class="has-info" data-name="كلاب">كلاب</span> بن مرة بن كعب بن لؤي بن غالب بن فهر (وهو قريش) بن مالك بن النضر بن كنانة بن خزيمة بن مدركة بن إلياس بن مضر بن نزار بن معد بن عدنان.
+      </p>
+    </section>
+
+    <section class="card beige">
+      <h2>ملاحظات هامة:</h2>
+      <ul>
+        <li>يلتقي نسب النبي ﷺ من جهة الأب والأم في <strong>كلاب بن مرة</strong>.</li>
+        <li>يُركّز التعليم على <strong>عبد الله</strong> و<strong>عبد المطلب</strong>.</li>
+      </ul>
+    </section>
+
+    <div class="start-button">
+      <a href="quiz.html">ابدأ التحدي ↗</a>
+    </div>
+  </main>
+
+  <div class="tooltip" id="tooltip"></div>
+
+  <footer>
+    <p>عمل الطالبة: تالين المالكي | إشراف: المعلمة منيرة الدوسري</p>
+  </footer>
+
+  <script>
+    const infoData = {
+      "عبد الله": "هو والد النبي ﷺ، كان من خيرة شباب قريش وأحسنهم خلقًا.",
+      "عبد المطلب": "هو جد النبي ﷺ، وكان سيدًا مطاعًا في قريش، وساقي الحجيج.",
+      "كلاب": "جد النبي ﷺ السادس، يلتقي عنده النسب من جهة الأب والأم.",
+      "آمنة": "هي والدة النبي ﷺ، من أفضل نساء قريش نسبًا وشرفًا."
+    };
+
+    const tooltip = document.getElementById("tooltip");
+
+    document.querySelectorAll(".has-info").forEach(el => {
+      el.addEventListener("click", (e) => {
+        const name = el.dataset.name;
+        tooltip.textContent = infoData[name];
+        tooltip.style.display = "block";
+        tooltip.style.top = (e.pageY + 10) + "px";
+        tooltip.style.left = (e.pageX - 100) + "px";
+      });
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!e.target.classList.contains("has-info")) {
+        tooltip.style.display = "none";
+      }
+    });
+
+    // عرض التاريخ والوقت
+    function updateDateTime() {
+      const now = new Date();
+      const dateString = now.toLocaleDateString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+      const timeString = now.toLocaleTimeString('ar-EG');
+      document.getElementById("datetime").textContent = `${dateString} - الساعة ${timeString}`;
+    }
+
+    updateDateTime();
+    setInterval(updateDateTime, 1000);
+  </script>
+</body>
+</html>
