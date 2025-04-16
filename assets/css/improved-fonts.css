@@ -1,0 +1,133 @@
+/* تحديث الخطوط العربية لتكون أكثر وضوحاً */
+
+/* استيراد خطوط عربية واضحة */
+@import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Cairo:wght@400;600;700;800&display=swap');
+
+/* تعريف متغيرات الخطوط الجديدة */
+:root {
+  --font-title: 'Cairo', 'Tajawal', sans-serif !important;
+  --font-body: 'Tajawal', 'Cairo', sans-serif !important;
+}
+
+/* تطبيق الخطوط الجديدة على كافة العناصر */
+body {
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.8;
+  letter-spacing: 0.2px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-title);
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.ancestor-card, .start-button a, .result-button, .print-button button {
+  font-family: var(--font-title);
+  font-weight: 600;
+}
+
+.tooltip-title, .student-name {
+  font-family: var(--font-title);
+  font-weight: 700;
+}
+
+.tooltip-content, .question-box, .answers-box button, p, li {
+  font-family: var(--font-body);
+  font-weight: 500;
+}
+
+/* تحسين حجم الخط للقراءة */
+.card p, .tooltip-content, .certificate p {
+  font-size: 1.05em;
+  line-height: 1.9;
+}
+
+.question-box {
+  font-size: 1.2em;
+  line-height: 1.8;
+}
+
+.answers-box button {
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+/* تحسين وضوح الخط في الأحجام الصغيرة */
+@media (max-width: 768px) {
+  body {
+    font-size: 16px;
+    line-height: 1.7;
+  }
+  
+  .card p, .tooltip-content, .certificate p {
+    font-size: 1em;
+    line-height: 1.8;
+  }
+}
+
+/* تحسين وضوح الخط في الأحجام الصغيرة جداً */
+@media (max-width: 480px) {
+  body {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  
+  .card p, .tooltip-content, .certificate p {
+    font-size: 0.95em;
+    line-height: 1.7;
+  }
+}
+
+/* تحسين وضوح الخط في متصفح سفاري */
+@supports (-webkit-touch-callout: none) {
+  body, p, li, .tooltip-content {
+    font-family: 'Tajawal', sans-serif !important;
+    font-weight: 500;
+  }
+  
+  h1, h2, h3, h4, h5, h6, .ancestor-card, .start-button a, .result-button, .tooltip-title, .student-name {
+    font-family: 'Cairo', sans-serif !important;
+    font-weight: 700;
+  }
+  
+  /* تحسين حجم الخط في سفاري */
+  .card p, .tooltip-content {
+    font-size: 1.1em;
+  }
+  
+  .question-box {
+    font-size: 1.3em;
+  }
+  
+  .answers-box button {
+    font-size: 1.15em;
+  }
+}
+
+/* تحسين وضوح الخط في متصفح فايرفوكس */
+@-moz-document url-prefix() {
+  body, p, li, .tooltip-content {
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 500;
+  }
+  
+  h1, h2, h3, h4, h5, h6, .ancestor-card, .start-button a, .result-button, .tooltip-title, .student-name {
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+  }
+}
+
+/* تحسين وضوح الخط في الطباعة */
+@media print {
+  body, p, li {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12pt;
+  }
+  
+  h1, h2, h3, h4, h5, h6, .student-name {
+    font-family: 'Cairo', sans-serif;
+    font-weight: bold;
+  }
+}

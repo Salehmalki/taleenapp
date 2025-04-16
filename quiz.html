@@ -6,7 +6,11 @@
   <title>اختبار نسب النبي ﷺ</title>
   <link rel="stylesheet" href="assets/css/enhanced-style.css">
   <link rel="stylesheet" href="assets/css/compatibility.css">
-  <script src="assets/js/audio.js" defer></script>
+  <link rel="stylesheet" href="assets/css/safari-fix.css">
+  <link rel="stylesheet" href="assets/css/improved-fonts.css">
+  <link rel="stylesheet" href="assets/css/countdown-timer.css">
+  <link rel="stylesheet" href="assets/css/mobile-navigation.css">
+  <script src="assets/js/improved-audio.js" defer></script>
   <script src="assets/js/ios-compatibility.js" defer></script>
 </head>
 <body>
@@ -18,7 +22,15 @@
     <div id="quizBox">
       <div id="question" class="question-box"></div>
       <div id="answers" class="answers-box"></div>
-      <div id="timer">الوقت: <span id="time">120</span> ثانية</div>
+      <div id="timer" class="timer-container">
+        <div class="timer-label">الوقت المتبقي:</div>
+        <div class="timer-display">
+          <div class="timer-progress">
+            <div id="timer-bar"></div>
+          </div>
+          <div class="timer-text"><span id="time">120</span> ثانية</div>
+        </div>
+      </div>
     </div>
     <div id="result"></div>
   </main>
@@ -26,6 +38,17 @@
   <footer>
     <p>عمل الطالبة: تالين المالكي | إشراف: المعلمة منيرة الدوسري</p>
   </footer>
+
+  <div class="mobile-nav quiz-mobile-nav">
+    <a href="index.html" class="mobile-nav-button">
+      <div class="mobile-nav-icon">🏠</div>
+      <div>الرئيسية</div>
+    </a>
+    <a href="quiz.html" class="mobile-nav-button">
+      <div class="mobile-nav-icon">🔄</div>
+      <div>إعادة الاختبار</div>
+    </a>
+  </div>
 
   <script>
     const questions = [
@@ -55,7 +78,7 @@
         correct: 2
       },
       {
-        q: "إلى أي بطن تنتمي والدة النبي ﷺ؟",
+        q: "إلى أي قبيلة تنتمي آمنة والدة النبي ﷺ؟",
         a: ["بنو هاشم", "بنو أمية", "بنو زهرة", "بنو مخزوم"],
         correct: 2
       },
@@ -79,9 +102,32 @@
     };
 
     function startTimer() {
+      const totalTime = 120;
+      timeLeft = totalTime;
+      const timerBar = document.getElementById("timer-bar");
+      const timerContainer = document.getElementById("timer");
+      
       timer = setInterval(() => {
         timeLeft--;
         document.getElementById("time").textContent = timeLeft;
+        
+        // تحديث شريط التقدم
+        const percentage = (timeLeft / totalTime) * 100;
+        timerBar.style.width = percentage + "%";
+        
+        // تغيير لون الشريط عندما يقترب الوقت من النهاية
+        if (timeLeft <= 30 && timeLeft > 10) {
+          timerContainer.classList.add("timer-warning");
+          timerContainer.classList.remove("timer-danger");
+        } else if (timeLeft <= 10) {
+          timerContainer.classList.add("timer-danger");
+          timerContainer.classList.remove("timer-warning");
+          // تشغيل صوت تنبيه عند اقتراب انتهاء الوقت
+          if (timeLeft === 10 || timeLeft === 5) {
+            playIncorrectSound();
+          }
+        }
+        
         if (timeLeft <= 0) endQuiz();
       }, 1000);
     }
