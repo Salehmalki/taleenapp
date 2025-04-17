@@ -1,0 +1,43 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Arial', sans-serif;
+}
+
+svg {
+    width: 100%;
+    height: auto;
+}
+
+.tree-container {
+    overflow: auto;
+    position: relative;
+}
+
+.node {
+    cursor: pointer;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+}
+
+@media (max-width: 768px) {
+    .tooltip {
+        font-size: 12px;
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tooltip {
+        font-size: 10px;
+        padding: 6px;
+    }
+}

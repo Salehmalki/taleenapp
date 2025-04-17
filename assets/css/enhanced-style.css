@@ -508,6 +508,114 @@ footer {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
+/* أنماط شجرة النسب المحسنة */
+.genealogy-trees {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  margin: 20px 0;
+}
+
+.tree-container {
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 10px;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tree-container h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #5a5a5a;
+  font-size: 1.2rem;
+}
+
+.ancestors-tree {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px;
+  overflow-x: auto;
+}
+
+.paternal-tree {
+  border-right: 3px solid #3498db;
+}
+
+.maternal-tree {
+  border-right: 3px solid #e74c3c;
+}
+
+.lineage-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.connecting-line {
+  width: 2px;
+  height: 30px;
+  margin: 5px 0;
+}
+
+.paternal-line {
+  background-color: #3498db;
+}
+
+.maternal-line {
+  background-color: #e74c3c;
+}
+
+.ancestor-container {
+  margin: 5px 0;
+}
+
+.person-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  padding: 10px;
+  min-width: 100px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.person-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.person-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-bottom: 5px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.icon_male {
+  background-color: #3498db;
+}
+
+.icon_female {
+  background-color: #e74c3c;
+}
+
+.person-name {
+  font-size: 0.9rem;
+  font-weight: bold;
+  text-align: center;
+}
+
 /* تنسيقات متجاوبة */
 @media (max-width: 768px) {
   body {
@@ -536,6 +644,20 @@ footer {
   
   .certificate .student-name {
     font-size: 1.6em;
+  }
+
+  .person-card {
+    min-width: 80px;
+    padding: 8px;
+  }
+  
+  .person-icon {
+    width: 30px;
+    height: 30px;
+  }
+  
+  .person-name {
+    font-size: 0.8rem;
   }
 }
 

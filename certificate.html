@@ -4,13 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>شهادة تقدير</title>
-  <link rel="stylesheet" href="assets/css/enhanced-style.css">
-  <link rel="stylesheet" href="assets/css/enhanced-safari-fix.css">
-  <link rel="stylesheet" href="assets/css/ui-consistency-fix.css">
-  <link rel="stylesheet" href="assets/css/mobile-compatibility.css">
+  <link rel="stylesheet" href="assets/css/certificate-golden.css">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
   <script src="assets/js/simplified-audio.js" defer></script>
-  <script src="assets/js/enhanced-safari-compatibility.js" defer></script>
-  <script src="assets/js/mobile-compatibility.js" defer></script>
 </head>
 <body>
   <header>
@@ -23,9 +19,9 @@
       <div class="certificate">
         <div class="certificate-content">
           <h2>شهادة تقدير</h2>
-          <p>تشهد مدرسة تحفيظ القرآن الكريم بأن الطالبة</p>
+          <p>نشهد أن الطالب / الطالبة</p>
           <p class="student-name" id="student-name">_________________</p>
-          <p>قد أتمت اختبار نسب النبي محمد ﷺ بنجاح</p>
+          <p>قد أتم/ت اختبار نسب النبي محمد ﷺ بنجاح</p>
           <p class="certificate-date" id="certificate-date">التاريخ: __/__/____</p>
         </div>
       </div>
@@ -42,8 +38,6 @@
   <footer class="no-print">
     <p>عمل الطالبة: تالين المالكي | إشراف: المعلمة منيرة الدوسري</p>
   </footer>
-
-  <!-- تم إزالة شريط التنقل الثابت بناءً على طلب المستخدم -->
 
   <script>
     // عرض التاريخ الحالي
@@ -103,22 +97,6 @@
           updateStudentName();
         }
       });
-      
-      // تحسين تجربة المستخدم على الأجهزة المحمولة
-      const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
-      
-      if (isMobile) {
-        // تكبير حجم حقل الإدخال والأزرار على الأجهزة المحمولة
-        document.getElementById('name-input').style.fontSize = '16px';
-        document.getElementById('name-input').style.padding = '12px';
-        
-        const buttons = document.querySelectorAll('.print-button button, .print-button .result-button');
-        buttons.forEach(function(button) {
-          button.style.padding = '12px 15px';
-          button.style.margin = '10px 0';
-          button.style.width = '100%';
-        });
-      }
     });
   </script>
 </body>

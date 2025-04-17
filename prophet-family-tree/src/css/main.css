@@ -1,0 +1,77 @@
+body {
+    font-family: 'ArabicFont', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+}
+
+.card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+    padding: 15px;
+}
+
+h1, h2, h3 {
+    margin: 0;
+}
+
+.tooltip {
+    position: absolute;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 10;
+    transition: opacity 0.3s;
+}
+
+.tooltip.hidden {
+    opacity: 0;
+}
+
+.tree-controls {
+    margin: 10px 0;
+}
+
+.tree-controls button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+.tree-controls button:hover {
+    background-color: #45a049;
+}
+
+.swipe-hint {
+    text-align: center;
+    font-size: 14px;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .card {
+        padding: 10px;
+    }
+
+    .tooltip {
+        font-size: 12px;
+    }
+}

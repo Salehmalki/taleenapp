@@ -4,14 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>اختبار نسب النبي محمد ﷺ</title>
-  <link rel="stylesheet" href="assets/css/enhanced-style.css">
-  <link rel="stylesheet" href="assets/css/enhanced-safari-fix.css">
-  <link rel="stylesheet" href="assets/css/ui-consistency-fix.css">
-  <link rel="stylesheet" href="assets/css/mobile-compatibility.css">
-  <link rel="stylesheet" href="assets/css/countdown-timer.css">
+  <link rel="stylesheet" href="assets/css/quiz-golden.css">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
   <script src="assets/js/simplified-audio.js" defer></script>
-  <script src="assets/js/enhanced-safari-compatibility.js" defer></script>
-  <script src="assets/js/mobile-compatibility.js" defer></script>
   <script src="assets/js/updated-quiz-questions.js" defer></script>
 </head>
 <body>
@@ -50,8 +45,6 @@
   <footer>
     <p>عمل الطالبة: تالين المالكي | إشراف: المعلمة منيرة الدوسري</p>
   </footer>
-
-  <!-- تم إزالة شريط التنقل الثابت بناءً على طلب المستخدم -->
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -144,6 +137,9 @@
         // إيقاف العداد التنازلي
         clearInterval(timer);
         
+        // إخفاء حاوية المؤقت
+        document.querySelector('.timer-container').style.display = 'none';
+        
         // إخفاء حاوية الأسئلة وإظهار حاوية النتيجة
         document.getElementById('question-container').style.display = 'none';
         document.getElementById('result-container').style.display = 'block';
@@ -174,6 +170,9 @@
           // إعادة تهيئة الاختبار
           currentQuestion = 0;
           score = 0;
+          
+          // إظهار حاوية المؤقت مرة أخرى
+          document.querySelector('.timer-container').style.display = 'flex';
           
           // إخفاء حاوية النتيجة وإظهار حاوية الأسئلة
           document.getElementById('result-container').style.display = 'none';

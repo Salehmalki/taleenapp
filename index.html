@@ -3,19 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>تعلم نسب النبي محمد ﷺ</title>
-  <link rel="stylesheet" href="assets/css/enhanced-style.css">
-  <link rel="stylesheet" href="assets/css/enhanced-safari-fix.css">
-  <link rel="stylesheet" href="assets/css/ui-consistency-fix.css">
-  <link rel="stylesheet" href="assets/css/mobile-compatibility.css">
-  <script src="assets/js/simplified-audio.js" defer></script>
-  <script src="assets/js/enhanced-safari-compatibility.js" defer></script>
-  <script src="assets/js/mobile-compatibility.js" defer></script>
-  <script src="assets/js/updated-genealogy-data.js" defer></script>
+  <title>شجرة نسب النبي محمد ﷺ</title>
+  <link rel="stylesheet" href="assets/css/family-tree.css">
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <header>
-    <h1>تعلم نسب النبي محمد ﷺ</h1>
+    <h1>شجرة نسب النبي محمد ﷺ</h1>
     <p class="subtitle">تطبيق تعليمي للأطفال</p>
   </header>
 
@@ -26,8 +20,17 @@
         هو محمد بن عبد الله بن عبد المطلب بن هاشم بن عبد مناف بن قصي بن كلاب بن مرة بن كعب بن لؤي بن غالب بن فهر (وهو المسمى قريشًا) بن مالك بن النضر بن كنانة بن خزيمة بن مدركة بن إلياس بن مضر بن نزار بن معد بن عدنان. ويرتفع نسب عدنان كما هو مشهور إلى إسماعيل بن إبراهيم عليهما السلام.
       </p>
       
-      <div class="ancestors-tree" id="ancestors-tree">
-        <!-- سيتم إنشاء شجرة النسب ديناميكيًا باستخدام JavaScript -->
+      <div class="tree-controls">
+        <button id="zoom-in" class="control-btn">تكبير +</button>
+        <button id="zoom-out" class="control-btn">تصغير -</button>
+        <button id="reset-view" class="control-btn">إعادة ضبط</button>
+        <button id="toggle-layout" class="control-btn">تغيير الاتجاه</button>
+      </div>
+      
+      <div class="svg-container">
+        <svg id="family-tree" width="100%" height="600" xmlns="http://www.w3.org/2000/svg">
+          <g id="tree-group"></g>
+        </svg>
       </div>
     </div>
 
@@ -46,123 +49,16 @@
   <footer>
     <p>عمل الطالبة: تالين المالكي | إشراف: المعلمة منيرة الدوسري</p>
   </footer>
+  
+  <div id="tooltip" class="tooltip" style="display: none;">
+    <div class="tooltip-header">
+      <h3 id="tooltip-title"></h3>
+      <span class="close-tooltip">&times;</span>
+    </div>
+    <p id="tooltip-info"></p>
+  </div>
 
-  <!-- تم إزالة شريط التنقل الثابت بناءً على طلب المستخدم -->
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // إنشاء شجرة النسب
-      const ancestorsTree = document.getElementById('ancestors-tree');
-      
-      // إنشاء بطاقة للنبي محمد ﷺ
-      createAncestorCard('محمد', ancestorsTree);
-      
-      // لم نعد بحاجة إلى مستمع الأحداث هنا لأننا أضفنا مستمعات مباشرة لكل بطاقة
-    });
-
-    // دالة إنشاء بطاقة جد
-    function createAncestorCard(name, container) {
-      if (!ancestorsData[name]) return;
-      
-      const card = document.createElement('div');
-      card.className = 'ancestor-card clickable';
-      card.setAttribute('data-name', name);
-      
-      // إضافة أيقونة مناسبة
-      const iconClass = ancestorsData[name].icon || 'icon_ancestor';
-      card.innerHTML = `
-        <div class="ancestor-icon ${iconClass}"></div>
-        <div class="ancestor-name">${name}</div>
-      `;
-      
-      // إضافة مستمع للنقر على البطاقة مباشرة
-      card.addEventListener('click', function(e) {
-        e.stopPropagation(); // منع انتشار الحدث للعناصر الأب
-        const name = this.getAttribute('data-name');
-        showAncestorInfo(name, e);
-        
-        // تشغيل صوت النقرة
-        if (typeof playClickSound === 'function') {
-          playClickSound();
-        }
-      });
-      
-      container.appendChild(card);
-      
-      // إنشاء بطاقات للوالدين إذا كانت موجودة
-      if (ancestorsData[name].father) {
-        const fatherContainer = document.createElement('div');
-        fatherContainer.className = 'ancestor-children';
-        container.appendChild(fatherContainer);
-        createAncestorCard(ancestorsData[name].father, fatherContainer);
-      }
-      
-      if (ancestorsData[name].mother) {
-        const motherContainer = document.createElement('div');
-        motherContainer.className = 'ancestor-children';
-        container.appendChild(motherContainer);
-        createAncestorCard(ancestorsData[name].mother, motherContainer);
-      }
-    }
-
-    // دالة عرض معلومات الجد
-    function showAncestorInfo(name, event) {
-      // إزالة أي تلميحات سابقة
-      const oldTooltip = document.querySelector('.tooltip');
-      if (oldTooltip) {
-        oldTooltip.remove();
-      }
-      
-      if (!ancestorsData[name]) return;
-      
-      // إنشاء تلميح جديد
-      const tooltip = document.createElement('div');
-      tooltip.className = 'tooltip';
-      tooltip.innerHTML = `
-        <h3>${ancestorsData[name].title}</h3>
-        <p>${ancestorsData[name].info}</p>
-      `;
-      
-      // تحديد موقع التلميح
-      const card = event.target.closest('.ancestor-card');
-      const rect = card.getBoundingClientRect();
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      
-      // تحسين موقع التلميح للأجهزة المحمولة
-      const isMobile = window.innerWidth <= 768;
-      if (isMobile) {
-        const windowWidth = window.innerWidth;
-        const tooltipWidth = Math.min(windowWidth * 0.9, 300);
-        
-        tooltip.style.maxWidth = tooltipWidth + 'px';
-        tooltip.style.left = Math.max(10, (windowWidth - tooltipWidth) / 2) + 'px';
-        tooltip.style.top = (rect.bottom + scrollTop + 10) + 'px';
-        
-        // إضافة زر إغلاق للتلميح على الأجهزة المحمولة
-        const closeButton = document.createElement('button');
-        closeButton.className = 'close-tooltip';
-        closeButton.innerHTML = '×';
-        closeButton.addEventListener('click', function() {
-          tooltip.remove();
-        });
-        tooltip.insertBefore(closeButton, tooltip.firstChild);
-      } else {
-        tooltip.style.top = (rect.bottom + scrollTop + 10) + 'px';
-        tooltip.style.left = (rect.left + (rect.width / 2) - 150) + 'px';
-      }
-      
-      document.body.appendChild(tooltip);
-      
-      // إضافة مستمع لإغلاق التلميح عند النقر في أي مكان آخر
-      setTimeout(() => {
-        document.addEventListener('click', function closeTooltip(e) {
-          if (!tooltip.contains(e.target) && !card.contains(e.target)) {
-            tooltip.remove();
-            document.removeEventListener('click', closeTooltip);
-          }
-        });
-      }, 10);
-    }
-  </script>
+  <script src="assets/js/genealogy-data.js"></script>
+  <script src="assets/js/family-tree.js"></script>
 </body>
 </html>
