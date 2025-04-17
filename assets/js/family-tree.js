@@ -58,6 +58,16 @@ document.addEventListener('DOMContentLoaded', function() {
   if (controlButtons) {
     controlButtons.style.display = 'none';
   }
+
+  // تحديد نوع المتصفح ونظام التشغيل
+  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
+  
+  // إضافة معالجة خاصة لمتصفح Safari على الموبايل
+  if ((isSafari || isIOS) && isMobile) {
+    fixSafariMobileTreeLayout();
+  }
 });
 
 // دالة بناء الشجرة بأسلوب المخطوطة الذهبية
@@ -366,4 +376,305 @@ function showPersonInfo(person) {
       document.removeEventListener('keydown', escapeHandler);
     }
   });
+}
+
+// دالة إصلاح مشاكل تخطيط الشجرة في Safari على الموبايل
+function fixSafariMobileTreeLayout() {
+  // 1. استخدام تخطيط مختلف لمتصفح Safari على الموبايل
+  const treeRows = document.querySelectorAll('.tree-row');
+  
+  // إذا كان التخطيط عمودياً بالكامل، نقوم بتنفيذ الإصلاح
+  if (treeRows.length > 0) {
+    let isVerticalOnly = true;
+    
+    // تحقق مما إذا كانت جميع الصفوف تحتوي على عنصر واحد فقط
+    for (let i = 0; i < treeRows.length; i++) {
+      if (treeRows[i].querySelectorAll('.person-card').length > 1) {
+        isVerticalOnly = false;
+        break;
+      }
+    }
+    
+    // إذا كان كل صف يحتوي على عنصر واحد فقط، نطبق التخطيط الجديد
+    if (isVerticalOnly) {
+      console.log("تطبيق إصلاح Safari للشجرة");
+      applyAlternativeLayout();
+    }
+  } else {
+    // استباقي: إذا لم يتم العثور على صفوف الشجرة، نقوم بإعادة رسم الشجرة
+    setTimeout(function() {
+      rebuildTreeWithCompatibleLayout();
+    }, 500);
+  }
+}
+
+// تطبيق تخطيط بديل للشجرة
+function applyAlternativeLayout() {
+  const treeContainer = document.querySelector('.tree-container') || document.querySelector('.family-tree-container');
+  if (!treeContainer) return;
+  
+  // 1. حفظ حالة العناصر الحالية
+  const peopleCards = Array.from(document.querySelectorAll('.person-card'));
+  const peopleData = peopleCards.map(card => ({
+    id: card.dataset.id,
+    element: card,
+    parent: findParentId(card.dataset.id)
+  }));
+  
+  // 2. إعادة تنظيم حاوية الشجرة
+  treeContainer.innerHTML = '';
+  
+  // 3. إنشاء صفوف شجرة جديدة مع التفرعات المناسبة
+  const generations = organizeByRelations(peopleData);
+  
+  // 4. إنشاء كل صف من الشجرة
+  generations.forEach((generation, index) => {
+    const rowDiv = document.createElement('div');
+    rowDiv.className = 'tree-row safari-fixed';
+    rowDiv.dataset.level = index;
+    
+    // إضافة أنماط CSS مخصصة لكل صف
+    rowDiv.style.display = 'flex';
+    rowDiv.style.flexDirection = 'row';
+    rowDiv.style.flexWrap = 'wrap';
+    rowDiv.style.justifyContent = 'center';
+    rowDiv.style.gap = '15px';
+    rowDiv.style.marginBottom = '30px';
+    rowDiv.style.position = 'relative';
+    rowDiv.style.zIndex = (100 - index); // زيادة z-index للصفوف العلوية
+    
+    // إضافة العناصر إلى الصف
+    generation.forEach(personData => {
+      const originalCard = peopleData.find(p => p.id === personData.id)?.element;
+      if (originalCard) {
+        rowDiv.appendChild(originalCard.cloneNode(true));
+      }
+    });
+    
+    treeContainer.appendChild(rowDiv);
+  });
+  
+  // 5. إعادة إضافة خطوط الاتصال
+  setTimeout(() => {
+    addSafariCompatibleConnections(peopleData);
+  }, 100);
+}
+
+// إعادة بناء الشجرة باستخدام تخطيط متوافق
+function rebuildTreeWithCompatibleLayout() {
+  // الحصول على البيانات
+  const people = window.lineage || []; // استخدام البيانات العالمية إذا كانت متوفرة
+  if (people.length === 0) return;
+  
+  // تنظيم البيانات
+  const generations = organizeGenerationsManually(people);
+  const treeContainer = document.querySelector('.svg-container');
+  if (!treeContainer) return;
+  
+  // إنشاء حاوية جديدة
+  treeContainer.innerHTML = '';
+  treeContainer.className = 'family-tree-container';
+  
+  // إضافة الإطار الزخرفي
+  const ornamentalFrame = document.createElement('div');
+  ornamentalFrame.className = 'ornamental-frame';
+  treeContainer.appendChild(ornamentalFrame);
+  
+  // إضافة العنوان
+  const title = document.createElement('h3');
+  title.textContent = "نسب النبي محمد ﷺ";
+  title.style.textAlign = 'center';
+  title.style.margin = '15px 0 30px';
+  treeContainer.appendChild(title);
+  
+  // إنشاء حاوية الشجرة
+  const newTreeContainer = document.createElement('div');
+  newTreeContainer.className = 'tree-container safari-compatible';
+  treeContainer.appendChild(newTreeContainer);
+  
+  // إضافة أنماط خاصة للحاوية
+  newTreeContainer.style.display = 'flex';
+  newTreeContainer.style.flexDirection = 'column';
+  newTreeContainer.style.gap = '25px';
+  newTreeContainer.style.alignItems = 'center';
+  
+  // إضافة كل جيل كصف مستقل
+  generations.forEach((gen, index) => {
+    const row = document.createElement('div');
+    row.className = 'tree-row safari-compatible';
+    row.dataset.level = index;
+    
+    // أنماط الصف
+    row.style.display = 'flex';
+    row.style.flexDirection = 'row';
+    row.style.flexWrap = 'wrap';
+    row.style.justifyContent = 'center';
+    row.style.gap = '15px';
+    row.style.width = '100%';
+    
+    // إضافة بطاقات الأشخاص
+    gen.forEach(person => {
+      const card = createPersonCard(person);
+      row.appendChild(card);
+    });
+    
+    newTreeContainer.appendChild(row);
+  });
+  
+  // إضافة خطوط الاتصال المتوافقة
+  setTimeout(() => {
+    addSafariCompatibleConnections2(people);
+  }, 200);
+}
+
+// تنظيم البيانات يدوياً للتوافق مع Safari
+function organizeGenerationsManually(people) {
+  // تعريف الأجيال يدوياً للتأكد من الترتيب الصحيح
+  const generations = [
+    ['muhammad'], // الجيل الأول (محمد ﷺ)
+    ['abdullah'], // الجيل الثاني (عبد الله)
+    ['abdulmutalib', 'amina'], // الجيل الثالث (عبد المطلب وآمنة)
+    ['hashim', 'wahb'], // الجيل الرابع وهكذا...
+    ['abdmanaf', 'abdmanafzuhri'],
+    ['qusai', 'zuhrah'],
+    // أضف المزيد من الأجيال حسب الحاجة
+  ];
+  
+  // الحصول على البيانات الكاملة لكل اسم
+  return generations.map(gen => {
+    return gen.map(id => {
+      return people.find(p => p.id === id) || { id, name: id, title: '' };
+    });
+  });
+}
+
+// تنظيم البيانات بناءً على علاقات القرابة
+function organizeByRelations(peopleData) {
+  const generations = [];
+  const addedPeople = new Set();
+  
+  // ابدأ بمحمد ﷺ
+  const muhammad = peopleData.find(p => p.id === 'muhammad');
+  if (!muhammad) return generations;
+  
+  // الجيل الأول
+  generations.push([muhammad]);
+  addedPeople.add(muhammad.id);
+  
+  // استخدام BFS لتتبع الشجرة
+  let currentLevel = 0;
+  while (currentLevel < generations.length) {
+    const nextGeneration = [];
+    
+    // لكل شخص في المستوى الحالي
+    for (const person of generations[currentLevel]) {
+      // ابحث عن الوالدين
+      const parents = peopleData.filter(p => p.parent === person.id && !addedPeople.has(p.id));
+      
+      // أضفهم إلى الجيل التالي إذا تم العثور عليهم
+      if (parents.length > 0) {
+        nextGeneration.push(...parents);
+        parents.forEach(p => addedPeople.add(p.id));
+      }
+    }
+    
+    // إذا كان هناك جيل تالي، أضفه
+    if (nextGeneration.length > 0) {
+      generations.push(nextGeneration);
+    }
+    
+    currentLevel++;
+  }
+  
+  return generations;
+}
+
+// البحث عن هوية الوالد
+function findParentId(personId) {
+  // الوصول إلى بيانات الأنساب (يفترض أنها محملة في النطاق العام)
+  const lineageData = window.lineage || [];
+  if (!lineageData.length) return null;
+  
+  const person = lineageData.find(p => p.id === personId);
+  return person ? person.father : null;
+}
+
+// إضافة خطوط اتصال متوافقة مع Safari
+function addSafariCompatibleConnections(peopleData) {
+  const treeContainer = document.querySelector('.tree-container') || document.querySelector('.family-tree-container');
+  if (!treeContainer) return;
+  
+  // إزالة أي خطوط موجودة مسبقاً
+  document.querySelectorAll('.connection-line').forEach(el => el.remove());
+  
+  // لكل شخص، أضف خطاً يربطه بوالده
+  peopleData.forEach(person => {
+    if (!person.parent) return;
+    
+    const childCard = document.querySelector(`.person-card[data-id="${person.id}"]`);
+    const parentCard = document.querySelector(`.person-card[data-id="${person.parent}"]`);
+    
+    if (childCard && parentCard) {
+      addSimpleConnectionLine(childCard, parentCard, treeContainer);
+    }
+  });
+}
+
+// إضافة خطوط اتصال متوافقة مع Safari (الإصدار 2)
+function addSafariCompatibleConnections2(people) {
+  const treeContainer = document.querySelector('.tree-container') || document.querySelector('.family-tree-container');
+  if (!treeContainer) return;
+  
+  // إزالة أي خطوط موجودة مسبقاً
+  document.querySelectorAll('.connection-line').forEach(el => el.remove());
+  
+  // إنشاء خريطة للوصول السريع
+  const peopleMap = {};
+  people.forEach(person => {
+    peopleMap[person.id] = person;
+  });
+  
+  // إضافة خطوط لكل علاقة والد-ابن
+  people.forEach(person => {
+    if (!person.father) return;
+    
+    const childCard = document.querySelector(`.person-card[data-id="${person.id}"]`);
+    const parentCard = document.querySelector(`.person-card[data-id="${person.father}"]`);
+    
+    if (childCard && parentCard) {
+      addSimpleConnectionLine(childCard, parentCard, treeContainer);
+    }
+  });
+}
+
+// إضافة خط اتصال بسيط بين بطاقتين
+function addSimpleConnectionLine(childCard, parentCard, container) {
+  const childRect = childCard.getBoundingClientRect();
+  const parentRect = parentCard.getBoundingClientRect();
+  const containerRect = container.getBoundingClientRect();
+  
+  // تحويل الإحداثيات إلى نظام إحداثيات الحاوية
+  const childTop = childRect.top - containerRect.top + container.scrollTop;
+  const childLeft = childRect.left - containerRect.left + container.scrollLeft;
+  const parentTop = parentRect.top - containerRect.top + container.scrollTop;
+  const parentLeft = parentRect.left - containerRect.left + container.scrollLeft;
+  
+  // إنشاء خط بسيط مستقيم
+  const line = document.createElement('div');
+  line.className = 'connection-line';
+  line.style.position = 'absolute';
+  line.style.backgroundColor = 'rgba(212, 175, 55, 0.6)';
+  line.style.zIndex = '0';
+  
+  // حساب طول واتجاه الخط
+  const length = Math.sqrt(Math.pow(parentLeft - childLeft, 2) + Math.pow(parentTop - childTop, 2));
+  const angle = Math.atan2(parentTop - childTop, parentLeft - childLeft) * (180 / Math.PI);
+  
+  // تعيين خصائص الخط
+  line.style.width = `${length}px`;
+  line.style.height = '2px';
+  line.style.transformOrigin = '0 0';
+  line.style.transform = `translate(${childLeft + childRect.width/2}px, ${childTop + childRect.height/2}px) rotate(${angle}deg)`;
+  
+  container.appendChild(line);
 }

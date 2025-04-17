@@ -433,3 +433,53 @@ footer:before {
     font-size: 0.7rem;
   }
 }
+
+/* إضافة أنماط خاصة بالتوافق مع Safari */
+
+/* تصحيح عرض الشجرة على متصفح Safari */
+@supports (-webkit-touch-callout: none) {
+  .tree-row.safari-compatible,
+  .tree-row.safari-fixed {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 20px !important;
+    margin: 20px 0 !important;
+    width: 100% !important;
+  }
+  
+  .tree-container.safari-compatible {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 15px !important;
+    align-items: center !important;
+    width: 100% !important;
+  }
+  
+  /* تنسيق خطوط الاتصال في Safari */
+  .tree-container.safari-compatible .connection-line {
+    transform-origin: 0 0 !important;
+    height: 2px !important;
+  }
+  
+  /* تأكيد عرض العناصر */
+  .person-card {
+    display: inline-flex !important;
+    flex-direction: column !important;
+    text-align: center !important;
+  }
+}
+
+/* تصحيح محدد لعرض الشجرة على Safari للجوال */
+@media not all and (min-resolution:.001dpcm) { 
+  @supports (-webkit-appearance:none) {
+    .tree-row {
+      display: flex !important;
+      flex-direction: row !important;
+      flex-wrap: wrap !important;
+      justify-content: center !important;
+    }
+  }
+}
