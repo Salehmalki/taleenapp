@@ -241,6 +241,26 @@ main {
   background-color: var(--gold);
 }
 
+/* إزالة تأثيرات التظليل المتبقية */
+.answers-box button:focus {
+  outline: none;
+}
+
+.answers-box button.clicked {
+  background-color: #fff9e6;
+  border-color: var(--gold);
+}
+
+.answers-box button:active {
+  outline: none;
+}
+
+/* إضافة كود لإزالة أي تأثيرات خاصة بالمتصفح للعناصر المختارة */
+* {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* حاوية النتيجة */
 #result-container {
   border: 2px solid rgba(212, 175, 55, 0.5);
@@ -277,12 +297,14 @@ main {
   font-weight: bold;
 }
 
+/* تعديل أنماط أزرار النتيجة لضمان التوسيط والاتساق */
 .result-buttons {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 20px;
+  flex-direction: column; /* تغيير إلى عمودي للأجهزة المحمولة */
+  align-items: center; /* توسيط أفقي */
+  gap: 15px;
   margin-top: 30px;
+  width: 100%;
 }
 
 .result-button {
@@ -301,23 +323,12 @@ main {
   overflow: hidden;
   text-decoration: none;
   display: inline-block;
+  width: 80%; /* عرض موحد لجميع الأزرار */
+  text-align: center;
+  max-width: 280px; /* حد أقصى للعرض */
 }
 
-.result-button:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
-}
-
-.result-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(139, 104, 59, 0.4);
-}
-
+/* حفظ التدرجات اللونية المختلفة للأزرار */
 .result-button.retry {
   background: linear-gradient(to left, #43a047, #66bb6a, #43a047);
 }
@@ -390,11 +401,11 @@ footer:before {
   .result-buttons {
     flex-direction: column;
     gap: 15px;
+    width: 100%;
   }
   
   .result-button {
-    width: 100%;
-    text-align: center;
-    padding: 15px;
+    width: 80%;
+    max-width: 280px;
   }
 }

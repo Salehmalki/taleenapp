@@ -36,3 +36,78 @@ const quizQuestions = [
     correct: 2
   }
 ];
+
+// دالة عرض السؤال مع إضافة وظيفة إزالة التظليل
+
+function showQuestion() {
+  const questionData = questions[currentQuestion];
+  const questionText = document.getElementById('question-text');
+  const answersBox = document.getElementById('answers-box');
+  
+  // عرض نص السؤال
+  questionText.textContent = questionData.q;
+  
+  // إنشاء أزرار الإجابات
+  answersBox.innerHTML = '';
+  
+  // نسخ مصفوفة الإجابات وترتيبها عشوائيًا
+  const answers = questionData.a.slice();
+  shuffleArray(answers);
+  
+  // إنشاء أزرار الإجابات
+  answers.forEach(function(answer, index) {
+    const button = document.createElement('button');
+    button.className = 'clickable';
+    button.textContent = answer;
+    button.addEventListener('click', function() {
+      // التحقق من الإجابة
+      checkAnswer(answer, questionData);
+    });
+    answersBox.appendChild(button);
+  });
+  
+  // إعادة ضبط العداد التنازلي
+  resetTimer();
+  
+  // إزالة أي تركيز متبقي من الأسئلة السابقة
+  document.activeElement.blur();
+}
+
+// دالة التحقق من الإجابة مع تعديلها لإزالة التظليل قبل الانتقال للسؤال التالي
+function checkAnswer(selectedAnswer, questionData) {
+  const correctAnswer = questionData.a[questionData.correct];
+  
+  if (selectedAnswer === correctAnswer) {
+    // الإجابة صحيحة
+    score++;
+    
+    // تشغيل صوت النقرة
+    if (typeof playClickSound === 'function') {
+      playClickSound();
+    }
+  } else {
+    // الإجابة خاطئة
+    // تشغيل صوت النقرة
+    if (typeof playClickSound === 'function') {
+      playClickSound();
+    }
+  }
+  
+  // إزالة التركيز من جميع الأزرار
+  const buttons = document.querySelectorAll('.answers-box button');
+  buttons.forEach(button => {
+    button.blur();  // إزالة التركيز
+  });
+  
+  // الانتقال إلى السؤال التالي أو إنهاء الاختبار
+  currentQuestion++;
+  
+  if (currentQuestion < questions.length) {
+    // إضافة تأخير قصير قبل عرض السؤال التالي لإزالة أي آثار للتظليل
+    setTimeout(() => {
+      showQuestion();
+    }, 10);
+  } else {
+    endQuiz();
+  }
+}

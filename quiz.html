@@ -243,6 +243,16 @@
       
       // بدء الاختبار
       initQuiz();
+      
+      // إضافة مستمع أحداث للعموم لإزالة أي تظليل غير مرغوب فيه
+      document.addEventListener('touchstart', function() {
+        // تأجيل إزالة التركيز لضمان حدوث التفاعل أولاً
+        setTimeout(function() {
+          if (document.activeElement && document.activeElement.blur && document.activeElement.nodeName !== 'INPUT') {
+            document.activeElement.blur();
+          }
+        }, 100);
+      }, {passive: true});
     });
   </script>
 </body>
