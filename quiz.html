@@ -8,67 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
   <script src="assets/js/simplified-audio.js" defer></script>
   <script src="assets/js/updated-quiz-questions.js" defer></script>
-  
-  <style>
-    /* نمط جديد للإجابات باستخدام divs بدلاً من الأزرار */
-    .answer-choice {
-      padding: 15px;
-      margin: 10px 0;
-      border-radius: 15px;
-      background-color: #ffffff;
-      border: 1px solid #d1c5a8;
-      text-align: center;
-      cursor: pointer;
-      font-family: 'Amiri', serif;
-      font-size: 16px;
-      color: #5D4037;
-      position: relative;
-      transition: background-color 0.2s ease;
-      -webkit-tap-highlight-color: transparent;
-      user-select: none;
-      -webkit-user-select: none;
-      -webkit-touch-callout: none;
-    }
-    
-    /* إضافة تزيين زخرفي */
-    .answer-choice::before {
-      content: "";
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background-color: #D4AF37;
-      left: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
-    
-    /* تأثير التحويم فقط على الأجهزة غير اللمسية */
-    @media (hover: hover) {
-      .answer-choice:hover {
-        background-color: rgba(212, 175, 55, 0.1);
-      }
-    }
-    
-    /* تأثير الضغط - يظهر فقط أثناء الضغط الفعلي */
-    .answer-choice.pressed {
-      background-color: rgba(212, 175, 55, 0.2);
-    }
-    
-    /* منع التحديد */
-    .no-select {
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-    
-    /* التخلص من أي تأثيرات تلقائية */
-    * {
-      -webkit-tap-highlight-color: transparent !important;
-      outline: none !important;
-    }
-  </style>
 </head>
 <body class="no-select">
   <header>
@@ -139,7 +78,7 @@
         document.body.classList.add('no-select');
       }
       
-      // دالة عرض السؤال - مُعدّلة بالكامل
+      // دالة عرض السؤال
       function showQuestion() {
         const questionData = questions[currentQuestion];
         const questionText = document.getElementById('question-text');
@@ -152,73 +91,34 @@
         answersBox.innerHTML = '';
         
         // نسخ مصفوفة الإجابات وترتيبها عشوائيًا
-        const answers = [...questionData.a];
+        const answers = questionData.a.slice();
         shuffleArray(answers);
         
-        // إنشاء عناصر DIV للإجابات بدلاً من الأزرار
-        answers.forEach(function(answer) {
-          const answerDiv = document.createElement('div');
-          answerDiv.className = 'answer-choice';
-          answerDiv.textContent = answer;
-          
-          // إضافة مستمعات الأحداث المخصصة للأجهزة اللمسية والماوس
-          setupAnswerEventListeners(answerDiv, answer, questionData);
-          
-          // إضافة عنصر الإجابة إلى الحاوية
-          answersBox.appendChild(answerDiv);
+        // إنشاء أزرار الإجابات
+        answers.forEach(function(answer, index) {
+          const button = document.createElement('button');
+          button.className = 'clickable';
+          button.textContent = answer;
+          button.addEventListener('click', function() {
+            // التحقق من الإجابة
+            checkAnswer(answer, questionData);
+          });
+          answersBox.appendChild(button);
         });
         
         // إعادة ضبط العداد التنازلي
         resetTimer();
       }
       
-      // دالة إعداد مستمعات الأحداث للإجابات
-      function setupAnswerEventListeners(element, answer, questionData) {
-        // مستمع لبدء اللمس - إضافة تأثير الضغط
-        element.addEventListener('touchstart', function(e) {
-          e.preventDefault();
-          this.classList.add('pressed');
-        }, { passive: false });
-        
-        // مستمع لانتهاء اللمس - إزالة تأثير الضغط وتنفيذ الإجراء
-        element.addEventListener('touchend', function(e) {
-          e.preventDefault();
-          this.classList.remove('pressed');
-          
-          // إضافة تأخير صغير قبل التحقق من الإجابة
-          setTimeout(() => {
-            checkAnswer(answer, questionData);
-          }, 10);
-        }, { passive: false });
-        
-        // للماوس: مستمع للضغط
-        element.addEventListener('mousedown', function(e) {
-          this.classList.add('pressed');
-        });
-        
-        // للماوس: مستمع للإفلات
-        element.addEventListener('mouseup', function(e) {
-          this.classList.remove('pressed');
-          checkAnswer(answer, questionData);
-        });
-        
-        // تجنب بقاء تأثير الضغط إذا تحرك المؤشر خارج العنصر
-        element.addEventListener('mouseleave', function() {
-          this.classList.remove('pressed');
-        });
-      }
-      
       // دالة التحقق من الإجابة
       function checkAnswer(selectedAnswer, questionData) {
-        // إزالة أي تأثيرات متبقية من العناصر
-        document.querySelectorAll('.answer-choice').forEach(choice => {
-          choice.classList.remove('pressed');
-        });
-        
         const correctAnswer = questionData.a[questionData.correct];
+        const isCorrect = selectedAnswer === correctAnswer;
         
-        if (selectedAnswer === correctAnswer) {
+        // إضافة فئة للإجابة المختارة استنادًا إلى ما إذا كانت صحيحة أو خاطئة
+        if (isCorrect) {
           // الإجابة صحيحة
+          element.classList.add('correct');
           score++;
           
           // تشغيل صوت النقرة
@@ -227,23 +127,29 @@
           }
         } else {
           // الإجابة خاطئة
+          element.classList.add('incorrect');
+          
           // تشغيل صوت النقرة
           if (typeof playClickSound === 'function') {
             playClickSound();
           }
+          
+          // إظهار الإجابة الصحيحة بلون أخضر
+          document.querySelectorAll('.answer-choice').forEach(choice => {
+            if (choice.textContent === correctAnswer) {
+              choice.classList.add('correct');
+            }
+          });
         }
         
         // الانتقال إلى السؤال التالي أو إنهاء الاختبار
         currentQuestion++;
         
-        // زمن تأخير صغير قبل الانتقال للسؤال التالي (لتحسين تجربة المستخدم)
-        setTimeout(() => {
-          if (currentQuestion < questions.length) {
-            showQuestion();
-          } else {
-            endQuiz();
-          }
-        }, 100);
+        if (currentQuestion < questions.length) {
+          showQuestion();
+        } else {
+          endQuiz();
+        }
       }
       
       // دالة إنهاء الاختبار
@@ -264,47 +170,53 @@
         
         resultText.textContent = `لقد حصلت على ${score} من ${questions.length} (${percentage}%)`;
         
-        // إذا كانت النتيجة كاملة، عرض رابط الشهادة
-        if (score === questions.length) {
-          const resultButtons = document.querySelector('.result-buttons');
+        // مستمع لانتهاء اللمس - إزالة تأثير الضغط وتنفيذ الإجراء
+        element.addEventListener('touchend', function(e) {
+          e.preventDefault();
+          this.classList.remove('pressed');
           
-          // إنشاء زر الشهادة إذا لم يكن موجودًا
-          if (!document.getElementById('certificate-button')) {
-            const certificateButton = document.createElement('a');
-            certificateButton.id = 'certificate-button';
-            certificateButton.href = 'certificate.html';
-            certificateButton.className = 'result-button certificate clickable';
-            certificateButton.textContent = 'عرض الشهادة';
-            resultButtons.appendChild(certificateButton);
+          // منع التفاعل المتكرر
+          if (document.querySelector('.answer-choice.correct') || 
+              document.querySelector('.answer-choice.incorrect')) {
+            return;
           }
-        }
+          
+          // التحقق من الإجابة مع تمرير عنصر الإجابة
+          checkAnswer(answer, questionData, this);
+        }, { passive: false });
         
-        // إضافة مستمع لزر إعادة الاختبار
-        document.getElementById('retry-button').addEventListener('click', function() {
-          // إعادة تهيئة الاختبار
-          currentQuestion = 0;
-          score = 0;
+        // للماوس: مستمع للضغط
+        element.addEventListener('mousedown', function(e) {
+          this.classList.add('pressed');
+        });
+        
+        // للماوس: مستمع للإفلات
+        element.addEventListener('mouseup', function(e) {
+          this.classList.remove('pressed');
           
-          // إظهار حاوية المؤقت مرة أخرى
-          document.querySelector('.timer-container').style.display = 'flex';
+          // منع التفاعل المتكرر
+          if (document.querySelector('.answer-choice.correct') || 
+              document.querySelector('.answer-choice.incorrect')) {
+            return;
+          }
           
-          // إخفاء حاوية النتيجة وإظهار حاوية الأسئلة
-          document.getElementById('result-container').style.display = 'none';
-          document.getElementById('question-container').style.display = 'block';
-          
-          // إعادة تشغيل الاختبار
-          initQuiz();
+          checkAnswer(answer, questionData, this);
+        });
+        
+        // تجنب بقاء تأثير الضغط إذا تحرك المؤشر خارج العنصر
+        element.addEventListener('mouseleave', function() {
+          this.classList.remove('pressed');
         });
       }
-      
-      // دالة بدء العداد التنازلي
+
+      // تعديل في دالة startTimer لزيادة الوقت بسبب التأخير الإضافي في عرض الإجابات
       function startTimer() {
         const timerBar = document.getElementById('timer-bar');
         const timerText = document.getElementById('timer-text');
         const timerContainer = document.querySelector('.timer-container');
         
-        // إعادة ضبط العداد التنازلي
-        timeLeft = 30;
+        // زيادة الوقت قليلاً
+        timeLeft = 35; // بدلاً من 30
         timerText.textContent = timeLeft;
         timerBar.style.width = '100%';
         timerContainer.classList.remove('timer-warning', 'timer-danger');
@@ -313,7 +225,7 @@
         timer = setInterval(function() {
           timeLeft--;
           timerText.textContent = timeLeft;
-          timerBar.style.width = (timeLeft / 30 * 100) + '%';
+          timerBar.style.width = (timeLeft / 35 * 100) + '%'; // تعديل هنا أيضًا
           
           // تغيير لون العداد عندما يقترب الوقت من النهاية
           if (timeLeft <= 10 && timeLeft > 5) {
@@ -355,6 +267,51 @@
         return array;
       }
       
+      // تصحيح دالة endQuiz للتأكد من عرض النتيجة بشكل صحيح
+      function endQuiz() {
+        console.log("تم إنهاء الاختبار - النتيجة: " + score + " من " + questions.length);
+
+        // إيقاف العداد التنازلي
+        clearInterval(timer);
+        
+        // إخفاء حاوية المؤقت
+        document.querySelector('.timer-container').style.display = 'none';
+        
+        // التأكد من إخفاء حاوية الأسئلة
+        const questionContainer = document.getElementById('question-container');
+        if (questionContainer) {
+          questionContainer.style.display = 'none';
+        }
+        
+        // التأكد من إظهار حاوية النتيجة
+        const resultContainer = document.getElementById('result-container');
+        if (resultContainer) {
+          resultContainer.style.display = 'block';
+        } else {
+          console.error("لم يتم العثور على عنصر 'result-container'");
+        }
+        
+        // عرض النتيجة
+        const resultText = document.getElementById('result-text');
+        if (resultText) {
+          const percentage = Math.round((score / questions.length) * 100);
+          resultText.textContent = `لقد حصلت على ${score} من ${questions.length} (${percentage}%)`;
+        }
+        
+        // عرض زر الشهادة إذا كانت النتيجة كاملة
+        if (score === questions.length) {
+          const resultButtons = document.querySelector('.result-buttons');
+          if (resultButtons && !document.getElementById('certificate-button')) {
+            const certificateButton = document.createElement('a');
+            certificateButton.id = 'certificate-button';
+            certificateButton.href = 'certificate.html';
+            certificateButton.className = 'result-button certificate clickable';
+            certificateButton.textContent = 'عرض الشهادة';
+            resultButtons.appendChild(certificateButton);
+          }
+        }
+      }
+
       // بدء الاختبار
       initQuiz();
 
