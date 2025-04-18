@@ -1,0 +1,41 @@
+/* أنماط شجرة النسب ذات التصميم الثابت */
+
+.fixed-tree-container {
+  width: 100%;
+  overflow-x: hidden;
+  padding: 20px 0;
+}
+
+.fixed-tree-wrapper {
+  transition: transform 0.3s ease;
+}
+
+.fixed-person-card {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.fixed-person-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.fixed-person-card.prophet {
+  border: 2px solid #3498db;
+}
+
+.fixed-person-card.mother {
+  border: 2px solid #d63031;
+}
+
+.fixed-person-card.father {
+  border: 2px solid #0984e3;
+}
+
+/* تعديلات للأجهزة المحمولة */
+@media (max-width: 768px) {
+  .fixed-tree-wrapper {
+    transform-origin: center top;
+    min-height: 550px;
+  }
+}

@@ -2,14 +2,75 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, maximum-scale=1.0, user-scalable=no">
   <title>اختبار نسب النبي محمد ﷺ</title>
   <link rel="stylesheet" href="assets/css/quiz-golden.css">
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
   <script src="assets/js/simplified-audio.js" defer></script>
   <script src="assets/js/updated-quiz-questions.js" defer></script>
+  
+  <style>
+    /* نمط جديد للإجابات باستخدام divs بدلاً من الأزرار */
+    .answer-choice {
+      padding: 15px;
+      margin: 10px 0;
+      border-radius: 15px;
+      background-color: #ffffff;
+      border: 1px solid #d1c5a8;
+      text-align: center;
+      cursor: pointer;
+      font-family: 'Amiri', serif;
+      font-size: 16px;
+      color: #5D4037;
+      position: relative;
+      transition: background-color 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      -webkit-user-select: none;
+      -webkit-touch-callout: none;
+    }
+    
+    /* إضافة تزيين زخرفي */
+    .answer-choice::before {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background-color: #D4AF37;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+    
+    /* تأثير التحويم فقط على الأجهزة غير اللمسية */
+    @media (hover: hover) {
+      .answer-choice:hover {
+        background-color: rgba(212, 175, 55, 0.1);
+      }
+    }
+    
+    /* تأثير الضغط - يظهر فقط أثناء الضغط الفعلي */
+    .answer-choice.pressed {
+      background-color: rgba(212, 175, 55, 0.2);
+    }
+    
+    /* منع التحديد */
+    .no-select {
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    
+    /* التخلص من أي تأثيرات تلقائية */
+    * {
+      -webkit-tap-highlight-color: transparent !important;
+      outline: none !important;
+    }
+  </style>
 </head>
-<body>
+<body class="no-select">
   <header>
     <h1>اختبار نسب النبي محمد ﷺ</h1>
     <p class="subtitle">اختبري معلوماتك عن نسب النبي محمد ﷺ</p>
@@ -68,9 +129,17 @@
         
         // بدء العداد التنازلي
         startTimer();
+
+        // منع تحديد النص للمستخدمين
+        disableTextSelection();
+      }
+
+      // منع تحديد النص
+      function disableTextSelection() {
+        document.body.classList.add('no-select');
       }
       
-      // دالة عرض السؤال
+      // دالة عرض السؤال - مُعدّلة بالكامل
       function showQuestion() {
         const questionData = questions[currentQuestion];
         const questionText = document.getElementById('question-text');
@@ -79,31 +148,73 @@
         // عرض نص السؤال
         questionText.textContent = questionData.q;
         
-        // إنشاء أزرار الإجابات
+        // إفراغ حاوية الإجابات
         answersBox.innerHTML = '';
         
         // نسخ مصفوفة الإجابات وترتيبها عشوائيًا
-        const answers = questionData.a.slice();
+        const answers = [...questionData.a];
         shuffleArray(answers);
         
-        // إنشاء أزرار الإجابات
-        answers.forEach(function(answer, index) {
-          const button = document.createElement('button');
-          button.className = 'clickable';
-          button.textContent = answer;
-          button.addEventListener('click', function() {
-            // التحقق من الإجابة
-            checkAnswer(answer, questionData);
-          });
-          answersBox.appendChild(button);
+        // إنشاء عناصر DIV للإجابات بدلاً من الأزرار
+        answers.forEach(function(answer) {
+          const answerDiv = document.createElement('div');
+          answerDiv.className = 'answer-choice';
+          answerDiv.textContent = answer;
+          
+          // إضافة مستمعات الأحداث المخصصة للأجهزة اللمسية والماوس
+          setupAnswerEventListeners(answerDiv, answer, questionData);
+          
+          // إضافة عنصر الإجابة إلى الحاوية
+          answersBox.appendChild(answerDiv);
         });
         
         // إعادة ضبط العداد التنازلي
         resetTimer();
       }
       
+      // دالة إعداد مستمعات الأحداث للإجابات
+      function setupAnswerEventListeners(element, answer, questionData) {
+        // مستمع لبدء اللمس - إضافة تأثير الضغط
+        element.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          this.classList.add('pressed');
+        }, { passive: false });
+        
+        // مستمع لانتهاء اللمس - إزالة تأثير الضغط وتنفيذ الإجراء
+        element.addEventListener('touchend', function(e) {
+          e.preventDefault();
+          this.classList.remove('pressed');
+          
+          // إضافة تأخير صغير قبل التحقق من الإجابة
+          setTimeout(() => {
+            checkAnswer(answer, questionData);
+          }, 10);
+        }, { passive: false });
+        
+        // للماوس: مستمع للضغط
+        element.addEventListener('mousedown', function(e) {
+          this.classList.add('pressed');
+        });
+        
+        // للماوس: مستمع للإفلات
+        element.addEventListener('mouseup', function(e) {
+          this.classList.remove('pressed');
+          checkAnswer(answer, questionData);
+        });
+        
+        // تجنب بقاء تأثير الضغط إذا تحرك المؤشر خارج العنصر
+        element.addEventListener('mouseleave', function() {
+          this.classList.remove('pressed');
+        });
+      }
+      
       // دالة التحقق من الإجابة
       function checkAnswer(selectedAnswer, questionData) {
+        // إزالة أي تأثيرات متبقية من العناصر
+        document.querySelectorAll('.answer-choice').forEach(choice => {
+          choice.classList.remove('pressed');
+        });
+        
         const correctAnswer = questionData.a[questionData.correct];
         
         if (selectedAnswer === correctAnswer) {
@@ -125,11 +236,14 @@
         // الانتقال إلى السؤال التالي أو إنهاء الاختبار
         currentQuestion++;
         
-        if (currentQuestion < questions.length) {
-          showQuestion();
-        } else {
-          endQuiz();
-        }
+        // زمن تأخير صغير قبل الانتقال للسؤال التالي (لتحسين تجربة المستخدم)
+        setTimeout(() => {
+          if (currentQuestion < questions.length) {
+            showQuestion();
+          } else {
+            endQuiz();
+          }
+        }, 100);
       }
       
       // دالة إنهاء الاختبار
@@ -243,16 +357,26 @@
       
       // بدء الاختبار
       initQuiz();
-      
-      // إضافة مستمع أحداث للعموم لإزالة أي تظليل غير مرغوب فيه
-      document.addEventListener('touchstart', function() {
-        // تأجيل إزالة التركيز لضمان حدوث التفاعل أولاً
-        setTimeout(function() {
-          if (document.activeElement && document.activeElement.blur && document.activeElement.nodeName !== 'INPUT') {
-            document.activeElement.blur();
-          }
-        }, 100);
-      }, {passive: true});
+
+      // معالجة خاصة لمنع التظليل على iOS
+      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        document.addEventListener('touchend', function(e) {
+          // منع أي تظليل أو تأثيرات تركيز بعد اللمس
+          setTimeout(function() {
+            // تغطية شاملة لكل الأساليب الممكنة لإزالة التظليل
+            if (document.activeElement) document.activeElement.blur();
+            
+            // إلغاء أي تحديد نصي
+            if (window.getSelection) {
+              if (window.getSelection().empty) {  // Chrome
+                window.getSelection().empty();
+              } else if (window.getSelection().removeAllRanges) {  // Firefox
+                window.getSelection().removeAllRanges();
+              }
+            }
+          }, 10);
+        }, false);
+      }
     });
   </script>
 </body>

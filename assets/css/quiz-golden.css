@@ -261,6 +261,30 @@ main {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* إزالة التأثيرات البصرية عند التركيز لتجنب الالتباس */
+.answer-button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+/* تحسين تأثير النقر للتغذية الراجعة بدون ترك ظل */
+.answer-button:active {
+  transform: scale(0.98);
+  transition: transform 0.1s;
+}
+
+/* تأكد من عدم حدوث تغيير مرئي في الأزرار عندما تكون نشطة */
+button.clickable {
+  -webkit-tap-highlight-color: transparent;
+  outline: none !important;
+}
+
+/* تأثير التحويم بدلاً من التركيز */
+.answer-button:hover {
+  background-color: var(--light-gold);
+  color: var(--primary-brown);
+}
+
 /* حاوية النتيجة */
 #result-container {
   border: 2px solid rgba(212, 175, 55, 0.5);

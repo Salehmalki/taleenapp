@@ -20,13 +20,6 @@
         هو محمد بن عبد الله بن عبد المطلب بن هاشم بن عبد مناف بن قصي بن كلاب بن مرة بن كعب بن لؤي بن غالب بن فهر (وهو المسمى قريشًا) بن مالك بن النضر بن كنانة بن خزيمة بن مدركة بن إلياس بن مضر بن نزار بن معد بن عدنان. ويرتفع نسب عدنان كما هو مشهور إلى إسماعيل بن إبراهيم عليهما السلام.
       </p>
       
-      <div class="tree-controls">
-        <button id="zoom-in" class="control-btn">تكبير +</button>
-        <button id="zoom-out" class="control-btn">تصغير -</button>
-        <button id="reset-view" class="control-btn">إعادة ضبط</button>
-        <button id="toggle-layout" class="control-btn">تغيير الاتجاه</button>
-      </div>
-      
       <div class="svg-container">
         <svg id="family-tree" width="100%" height="600" xmlns="http://www.w3.org/2000/svg">
           <g id="tree-group"></g>
@@ -53,12 +46,11 @@
   <div id="tooltip" class="tooltip" style="display: none;">
     <div class="tooltip-header">
       <h3 id="tooltip-title"></h3>
-      <span class="close-tooltip">&times;</span>
+      <span class="close-tooltip">×</span>
     </div>
-    <p id="tooltip-info"></p>
+    <div id="tooltip-info"></div>
   </div>
 
-  <script src="assets/js/genealogy-data.js"></script>
   <script src="assets/js/family-tree.js"></script>
 </body>
 </html>

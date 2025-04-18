@@ -355,6 +355,75 @@ p {
   justify-content: center;
 }
 
+/* تعديلات للتلميح المنبثق */
+
+/* تلميح المعلومات */
+.tooltip {
+  background-color: var(--bg-parchment);
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  z-index: 1000;
+  border: 1px solid var(--light-gold);
+  max-width: 350px;
+  width: auto;
+  display: none;
+  position: absolute;
+}
+
+/* رأس التلميح */
+.tooltip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--gold);
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+}
+
+/* عنوان التلميح */
+#tooltip-title {
+  margin: 0;
+  color: var(--primary-brown);
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+/* زر إغلاق التلميح */
+.close-tooltip {
+  cursor: pointer;
+  font-size: 20px;
+  color: var(--secondary-brown);
+  font-weight: bold;
+  transition: color 0.3s;
+  padding: 0 5px;
+  line-height: 1;
+}
+
+.close-tooltip:hover {
+  color: var(--accent-red);
+}
+
+/* معلومات التلميح */
+#tooltip-info {
+  font-size: 0.95rem;
+  color: var(--secondary-brown);
+  line-height: 1.6;
+  text-align: justify;
+}
+
+/* للأجهزة المحمولة */
+@media (max-width: 767px) {
+  .tooltip {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 85% !important;
+    max-width: 300px !important;
+  }
+}
+
 /* األأزرار والروابط */
 .start-button {
   text-align: center;
@@ -482,4 +551,51 @@ footer:before {
       justify-content: center !important;
     }
   }
+}
+
+/* إضافات لتصميم شجرة النسب المتفرعة */
+
+/* تحسين عرض SVG */
+.svg-container {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* تنسيق التلميح */
+.tooltip {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  z-index: 1000;
+}
+
+/* للأجهزة المحمولة */
+@media (max-width: 767px) {
+  .tooltip {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 85% !important;
+    max-width: 300px !important;
+  }
+}
+
+/* تعديل تأثير التحويم على بطاقات الأشخاص */
+.person-node {
+  cursor: pointer;
+  transition: transform 0.3s;
+}
+
+.person-node:hover {
+  transform: translate(0, -3px);
+}
+
+/* تأثيرات خاصة لنقطة الجد المشترك */
+.connection-highlight {
+  animation: pulse 2s infinite alternate;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.5; }
+  100% { opacity: 1; }
 }

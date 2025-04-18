@@ -1,0 +1,138 @@
+/* أنماط لإصلاح مشاكل العرض في شجرة النسب */
+
+/* تنسيق صفوف الشجرة */
+.tree-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  width: 100%;
+  text-align: center;
+}
+
+/* تنسيق بطاقات الأشخاص */
+.person-card {
+  display: inline-block;
+  margin: 10px 15px;
+  padding: 15px;
+  border-radius: 15px;
+  min-width: 120px;
+  text-align: center;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease-in-out;
+  cursor: pointer;
+  position: relative;
+}
+
+/* إزالة أي تأثيرات حركة غير مرغوبة */
+.person-card:hover {
+  transform: none;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* تنسيق خاص لبطاقة النبي محمد ﷺ */
+.person-card.muhammad {
+  background-color: #fff3e0;
+  border: 1px solid var(--light-gold);
+}
+
+/* تنسيق خاص لبطاقات خط الأب */
+.person-card.father-line {
+  background-color: #e1f5fe;
+  border: 1px solid #b3e5fc;
+}
+
+/* تنسيق خاص لبطاقات خط الأم */
+.person-card.mother-line {
+  background-color: #fce4ec;
+  border: 1px solid #f8bbd0;
+}
+
+/* تنسيق اسم الشخص */
+.person-name {
+  font-weight: bold;
+  color: var(--primary-brown);
+  margin-bottom: 5px;
+  font-size: 16px;
+  text-align: center;
+}
+
+/* تنسيق لقب الشخص */
+.person-title {
+  color: var(--secondary-brown);
+  font-size: 12px;
+  text-align: center;
+}
+
+/* تنسيق التلميح المنبثق */
+.tooltip {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  padding: 15px;
+  max-width: 320px;
+  z-index: 1000;
+  display: none;
+}
+
+.tooltip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--light-gold);
+  margin-bottom: 10px;
+  padding-bottom: 5px;
+}
+
+#tooltip-title {
+  margin: 0;
+  color: var(--primary-brown);
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.close-tooltip {
+  cursor: pointer;
+  font-size: 22px;
+  color: #999;
+  font-weight: bold;
+  transition: color 0.2s;
+  padding: 0 5px;
+}
+
+.close-tooltip:hover {
+  color: var(--accent-red);
+}
+
+#tooltip-info {
+  font-size: 14px;
+  color: var(--secondary-brown);
+  line-height: 1.5;
+  text-align: justify;
+}
+
+/* تعديلات للأجهزة المحمولة */
+@media (max-width: 767px) {
+  .person-card {
+    min-width: 100px;
+    padding: 10px;
+    margin: 5px;
+  }
+  
+  .person-name {
+    font-size: 14px;
+  }
+  
+  .person-title {
+    font-size: 10px;
+  }
+  
+  .tooltip {
+    position: fixed !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    width: 85% !important;
+    max-width: 300px !important;
+  }
+}

@@ -21,660 +21,241 @@ const config = {
   animationDuration: 300,
 };
 
-// شجرة نسب النبي محمد ﷺ - نمط المخطوطة الذهبية
+// شجرة نسب النبي محمد ﷺ - النسخة المصححة
 
 document.addEventListener('DOMContentLoaded', function() {
-  // إنشاء حاوية شجرة النسب بتصميم المخطوطة الذهبية
-  const svgContainer = document.querySelector('.svg-container');
-  if (!svgContainer) return;
+  // بناء شجرة النسب بالتصميم الجديد
+  buildSimpleFamilyTree();
   
-  // استبدال محتوى الحاوية الحالية
-  svgContainer.innerHTML = '';
-  svgContainer.className = 'family-tree-container';
+  // إعداد زر إغلاق التلميح
+  document.querySelector('.close-tooltip')?.addEventListener('click', function() {
+    document.getElementById('tooltip').style.display = 'none';
+  });
   
-  // إنشاء إطار زخرفي
-  const ornamentalFrame = document.createElement('div');
-  ornamentalFrame.className = 'ornamental-frame';
-  svgContainer.appendChild(ornamentalFrame);
-  
-  // إنشاء عنصر العنوان
-  const treeTitle = document.createElement('h3');
-  treeTitle.textContent = 'نسب النبي محمد ﷺ المشرف';
-  treeTitle.style.textAlign = 'center';
-  treeTitle.style.color = '#5d4037';
-  treeTitle.style.margin = '10px 0 30px';
-  svgContainer.appendChild(treeTitle);
-  
-  // إنشاء حاوية رئيسية للشجرة
-  const treeContainer = document.createElement('div');
-  treeContainer.className = 'tree-container';
-  svgContainer.appendChild(treeContainer);
-  
-  // بناء الشجرة المرئية
-  buildFamilyTreeNative();
-  
-  // إزالة أزرار التكبير/التصغير غير المطلوبة
-  const controlButtons = document.querySelector('.tree-controls');
-  if (controlButtons) {
-    controlButtons.style.display = 'none';
-  }
-
-  // تحديد نوع المتصفح ونظام التشغيل
-  const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-  const isMobile = window.matchMedia("(max-width: 768px)").matches;
-  
-  // إضافة معالجة خاصة لمتصفح Safari على الموبايل
-  if ((isSafari || isIOS) && isMobile) {
-    fixSafariMobileTreeLayout();
-  }
+  // إغلاق التلميح عند النقر خارجه
+  document.addEventListener('click', function(event) {
+    const tooltip = document.getElementById('tooltip');
+    if (tooltip && !tooltip.contains(event.target) && 
+        !event.target.closest('.person-card')) {
+      tooltip.style.display = 'none';
+    }
+  });
 });
 
-// دالة بناء الشجرة بأسلوب المخطوطة الذهبية
-function buildFamilyTreeNative() {
-  // الحصول على حاوية الشجرة
-  const treeContainer = document.querySelector('.tree-container');
-  if (!treeContainer) return;
+// دالة بناء شجرة النسب البسيطة
+function buildSimpleFamilyTree() {
+  // الوصول إلى حاوية الشجرة
+  const container = document.querySelector('.svg-container');
+  if (!container) return;
   
-  // إنشاء خريطة للأشخاص لسهولة الوصول
-  const peopleMap = {};
-  lineage.forEach(person => {
-    peopleMap[person.id] = person;
-  });
+  // تنظيف الحاوية
+  container.innerHTML = '';
   
-  // ترتيب الأشخاص حسب المستويات العائلية
-  const generations = organizeByGenerations(lineage);
-  
-  // إنشاء صفوف الشجرة لكل جيل
-  generations.forEach((generation, index) => {
-    const rowDiv = document.createElement('div');
-    rowDiv.className = 'tree-row';
-    rowDiv.dataset.level = index;
+  // بيانات شجرة النسب مع معلومات الموقع
+  const treeData = [
+    // صف 1: النبي محمد ﷺ
+    { id: "muhammad", name: "محمد ﷺ", title: "خاتم الأنبياء", row: 0, position: 0, type: "prophet" },
     
-    // إنشاء بطاقات الأشخاص في هذا الجيل
-    generation.forEach(personId => {
-      const person = peopleMap[personId];
-      if (!person) return;
-      
-      const card = createPersonCard(person);
-      rowDiv.appendChild(card);
-    });
+    // صف 2: عبدالله وآمنة
+    { id: "abdullah", name: "عبدالله", title: "والد النبي ﷺ", row: 1, position: 1, type: "father" },
+    { id: "amina", name: "آمنة", title: "أم النبي ﷺ", row: 1, position: -1, type: "mother" },
     
-    treeContainer.appendChild(rowDiv);
-  });
-  
-  // إضافة خطوط اتصال بين الأشخاص
-  setTimeout(() => {
-    addConnectionLines(peopleMap);
-  }, 100); // تأخير بسيط لضمان رسم جميع البطاقات أولاً
-}
-
-// تنظيم الأشخاص حسب الأجيال
-function organizeByGenerations(people) {
-  // إنشاء خريطة للأشخاص لسهولة الوصول
-  const peopleMap = {};
-  people.forEach(person => {
-    peopleMap[person.id] = person;
-  });
-  
-  // حساب عمق كل شخص من النبي محمد
-  const depths = {};
-  const visited = {};
-  
-  function calculateDepth(personId) {
-    // إذا تم حساب العمق بالفعل، نعيده
-    if (depths[personId] !== undefined) return depths[personId];
+    // صف 3: عبدالمطلب ووهب
+    { id: "abdulmutalib", name: "عبد المطلب", title: "جد النبي ﷺ لأبيه", row: 2, position: 1, type: "father" },
+    { id: "wahb", name: "وهب", title: "جد النبي ﷺ لأمه", row: 2, position: -1, type: "father" },
     
-    // منع التكرار المستمر في حال وجود حلقة
-    if (visited[personId]) return 0;
-    visited[personId] = true;
+    // صف 4: هاشم وعبد مناف الزهري
+    { id: "hashim", name: "هاشم", title: "جد النبي الثاني", row: 3, position: 1, type: "father" },
+    { id: "abdmanafzuhri", name: "عبد مناف الزهري", title: "أبو وهب", row: 3, position: -1, type: "father" },
     
-    const person = peopleMap[personId];
-    if (!person) return 0;
+    // صف 5: عبد مناف وزهرة
+    { id: "abdmanaf", name: "عبد مناف", title: "جد النبي الثالث", row: 4, position: 1, type: "father" },
+    { id: "zuhrah", name: "زهرة", title: "جد النبي من قبل أمه", row: 4, position: -1, type: "father" },
     
-    // إذا كان هذا الشخص ليس له أب في القائمة، فهو في أعمق مستوى (عدنان)
-    if (!person.father || !peopleMap[person.father]) {
-      depths[personId] = 0;
-      return 0;
-    }
+    // صف 6: قصي
+    { id: "qusai", name: "قصي", title: "جد النبي الرابع", row: 5, position: 1, type: "father" },
     
-    // عمق الشخص = عمق والده + 1
-    const fatherDepth = calculateDepth(person.father);
-    depths[personId] = fatherDepth + 1;
-    return depths[personId];
-  }
-  
-  // حساب عمق لكل شخص بدءًا من محمد ﷺ
-  people.forEach(person => {
-    calculateDepth(person.id);
-  });
-  
-  // تقسيم الأشخاص إلى مجموعات حسب العمق
-  const depthGroups = {};
-  Object.keys(depths).forEach(personId => {
-    const depth = depths[personId];
-    if (!depthGroups[depth]) depthGroups[depth] = [];
-    depthGroups[depth].push(personId);
-  });
-  
-  // ترتيب المجموعات من الأكثر عمقًا (عدنان) إلى الأقل عمقًا (محمد)
-  const generations = [];
-  const depthLevels = Object.keys(depthGroups).sort((a, b) => a - b);
-  
-  depthLevels.forEach(depth => {
-    generations.push(depthGroups[depth]);
-  });
-  
-  return generations.reverse(); // عكس الترتيب ليكون محمد ﷺ في الأعلى
-}
-
-// إنشاء بطاقة لشخص
-function createPersonCard(person) {
-  const card = document.createElement('div');
-  card.className = 'person-card';
-  card.dataset.id = person.id;
-  
-  // تحديد فئة إضافية حسب الشخصية
-  if (person.id === 'muhammad') {
-    card.classList.add('muhammad');
-  } else if (person.gender === 'female') {
-    card.classList.add('mother-line');
-  } else {
-    card.classList.add('father-line');
-  }
-  
-  // إنشاء محتوى البطاقة
-  const nameDiv = document.createElement('div');
-  nameDiv.className = 'person-name';
-  nameDiv.textContent = person.name;
-  card.appendChild(nameDiv);
-  
-  // العنوان المختصر (اختياري)
-  if (person.title) {
-    const titleDiv = document.createElement('div');
-    titleDiv.className = 'person-title';
-    titleDiv.textContent = person.title;
-    card.appendChild(titleDiv);
-  }
-  
-  // إضافة زخارف
-  const decorTopRight = document.createElement('span');
-  decorTopRight.className = 'person-decoration decoration-top-right';
-  decorTopRight.textContent = '۞';
-  card.appendChild(decorTopRight);
-  
-  const decorBottomLeft = document.createElement('span');
-  decorBottomLeft.className = 'person-decoration decoration-bottom-left';
-  decorBottomLeft.textContent = '۞';
-  card.appendChild(decorBottomLeft);
-  
-  // إضافة مستمع أحداث للنقر
-  card.addEventListener('click', function() {
-    showPersonInfo(person);
-  });
-  
-  return card;
-}
-
-// إضافة خطوط الاتصال بين الأشخاص
-function addConnectionLines(peopleMap) {
-  const cards = document.querySelectorAll('.person-card');
-  const cardsMap = {};
-  
-  // تخزين جميع البطاقات في خريطة للوصول السريع
-  cards.forEach(card => {
-    cardsMap[card.dataset.id] = card;
-  });
-  
-  // إنشاء خط لكل علاقة بين الأب والابن
-  Object.keys(peopleMap).forEach(personId => {
-    const person = peopleMap[personId];
-    if (!person.father || !cardsMap[person.father]) return;
+    // صف 7: كلاب (الجد المشترك)
+    { id: "kilab", name: "كلاب", title: "جد النبي الخامس", row: 6, position: 0, type: "father" },
     
-    const childCard = cardsMap[personId];
-    const parentCard = cardsMap[person.father];
-    
-    if (!childCard || !parentCard) return;
-    
-    drawConnectionLine(childCard, parentCard);
-  });
-}
-
-// رسم خط الاتصال بين بطاقتين
-function drawConnectionLine(childCard, parentCard) {
-  const treeContainer = document.querySelector('.tree-container');
-  if (!treeContainer) return;
-  
-  const childRect = childCard.getBoundingClientRect();
-  const parentRect = parentCard.getBoundingClientRect();
-  const containerRect = treeContainer.getBoundingClientRect();
-  
-  // تحويل الإحداثيات إلى مساحة الحاوية
-  const childTop = childRect.top - containerRect.top + treeContainer.scrollTop;
-  const childLeft = childRect.left - containerRect.left + treeContainer.scrollLeft;
-  const parentTop = parentRect.top - containerRect.top + treeContainer.scrollTop;
-  const parentLeft = parentRect.left - containerRect.left + treeContainer.scrollLeft;
-  
-  // نقاط المركز
-  const childCenterX = childLeft + childRect.width / 2;
-  const childCenterY = childTop;
-  const parentCenterX = parentLeft + parentRect.width / 2;
-  const parentCenterY = parentTop + parentRect.height;
-  
-  // إنشاء خط عمودي من الأب إلى منتصف المسافة
-  const verticalLine = document.createElement('div');
-  verticalLine.className = 'connection-line vertical-line';
-  verticalLine.style.left = parentCenterX + 'px';
-  verticalLine.style.top = parentCenterY + 'px';
-  verticalLine.style.height = (childCenterY - parentCenterY) / 2 + 'px';
-  treeContainer.appendChild(verticalLine);
-  
-  // إنشاء خط أفقي
-  const horizontalLine = document.createElement('div');
-  horizontalLine.className = 'connection-line horizontal-line';
-  horizontalLine.style.top = (parentCenterY + (childCenterY - parentCenterY) / 2) + 'px';
-  horizontalLine.style.left = Math.min(parentCenterX, childCenterX) + 'px';
-  horizontalLine.style.width = Math.abs(childCenterX - parentCenterX) + 'px';
-  treeContainer.appendChild(horizontalLine);
-  
-  // إنشاء خط عمودي من منتصف المسافة إلى الابن
-  const verticalLine2 = document.createElement('div');
-  verticalLine2.className = 'connection-line vertical-line';
-  verticalLine2.style.left = childCenterX + 'px';
-  verticalLine2.style.top = (parentCenterY + (childCenterY - parentCenterY) / 2) + 'px';
-  verticalLine2.style.height = (childCenterY - (parentCenterY + (childCenterY - parentCenterY) / 2)) + 'px';
-  treeContainer.appendChild(verticalLine2);
-}
-
-// عرض معلومات الشخص في نافذة منبثقة
-function showPersonInfo(person) {
-  // إزالة أي نوافذ سابقة
-  const existingPopup = document.querySelector('.info-popup');
-  if (existingPopup) {
-    existingPopup.remove();
-  }
-  
-  // إنشاء النافذة المنبثقة
-  const popup = document.createElement('div');
-  popup.className = 'info-popup';
-  
-  // إضافة زر الإغلاق
-  const closeButton = document.createElement('button');
-  closeButton.className = 'close-button';
-  closeButton.textContent = '×';
-  closeButton.addEventListener('click', function() {
-    popup.remove();
-  });
-  popup.appendChild(closeButton);
-  
-  // إضافة العنوان
-  const title = document.createElement('h3');
-  title.className = 'info-title';
-  title.textContent = person.title || person.name;
-  popup.appendChild(title);
-  
-  // إضافة المحتوى
-  const content = document.createElement('div');
-  content.className = 'info-content';
-  content.textContent = person.info || 'لا توجد معلومات إضافية متوفرة.';
-  popup.appendChild(content);
-  
-  // إضافة تفاصيل إضافية
-  if (person.father) {
-    const father = lineage.find(p => p.id === person.father);
-    if (father) {
-      const fatherInfo = document.createElement('p');
-      fatherInfo.style.marginTop = '10px';
-      fatherInfo.innerHTML = '<strong>الأب:</strong> ' + father.name;
-      content.appendChild(fatherInfo);
-    }
-  }
-  
-  if (person.mother) {
-    const mother = lineage.find(p => p.id === person.mother);
-    if (mother) {
-      const motherInfo = document.createElement('p');
-      motherInfo.style.marginTop = '5px';
-      motherInfo.innerHTML = '<strong>الأم:</strong> ' + mother.name;
-      content.appendChild(motherInfo);
-    }
-  }
-  
-  // إضافة زخرفة للنافذة
-  const decorationBottom = document.createElement('div');
-  decorationBottom.style.textAlign = 'center';
-  decorationBottom.style.marginTop = '20px';
-  decorationBottom.style.color = '#d4af37';
-  decorationBottom.style.fontSize = '1.5rem';
-  decorationBottom.textContent = '۞';
-  popup.appendChild(decorationBottom);
-  
-  // إضافة النافذة إلى المستند
-  document.body.appendChild(popup);
-  
-  // إضافة تأثير الظل عند النقر خارج النافذة لإغلاقها
-  const overlay = document.createElement('div');
-  overlay.style.position = 'fixed';
-  overlay.style.top = '0';
-  overlay.style.right = '0';
-  overlay.style.bottom = '0';
-  overlay.style.left = '0';
-  overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-  overlay.style.zIndex = '999';
-  document.body.insertBefore(overlay, popup);
-  
-  overlay.addEventListener('click', function() {
-    popup.remove();
-    overlay.remove();
-  });
-  
-  // إضافة مستمع للنقر على الـ Escape لإغلاق النافذة
-  document.addEventListener('keydown', function escapeHandler(e) {
-    if (e.key === 'Escape') {
-      popup.remove();
-      overlay.remove();
-      document.removeEventListener('keydown', escapeHandler);
-    }
-  });
-}
-
-// دالة إصلاح مشاكل تخطيط الشجرة في Safari على الموبايل
-function fixSafariMobileTreeLayout() {
-  // 1. استخدام تخطيط مختلف لمتصفح Safari على الموبايل
-  const treeRows = document.querySelectorAll('.tree-row');
-  
-  // إذا كان التخطيط عمودياً بالكامل، نقوم بتنفيذ الإصلاح
-  if (treeRows.length > 0) {
-    let isVerticalOnly = true;
-    
-    // تحقق مما إذا كانت جميع الصفوف تحتوي على عنصر واحد فقط
-    for (let i = 0; i < treeRows.length; i++) {
-      if (treeRows[i].querySelectorAll('.person-card').length > 1) {
-        isVerticalOnly = false;
-        break;
-      }
-    }
-    
-    // إذا كان كل صف يحتوي على عنصر واحد فقط، نطبق التخطيط الجديد
-    if (isVerticalOnly) {
-      console.log("تطبيق إصلاح Safari للشجرة");
-      applyAlternativeLayout();
-    }
-  } else {
-    // استباقي: إذا لم يتم العثور على صفوف الشجرة، نقوم بإعادة رسم الشجرة
-    setTimeout(function() {
-      rebuildTreeWithCompatibleLayout();
-    }, 500);
-  }
-}
-
-// تطبيق تخطيط بديل للشجرة
-function applyAlternativeLayout() {
-  const treeContainer = document.querySelector('.tree-container') || document.querySelector('.family-tree-container');
-  if (!treeContainer) return;
-  
-  // 1. حفظ حالة العناصر الحالية
-  const peopleCards = Array.from(document.querySelectorAll('.person-card'));
-  const peopleData = peopleCards.map(card => ({
-    id: card.dataset.id,
-    element: card,
-    parent: findParentId(card.dataset.id)
-  }));
-  
-  // 2. إعادة تنظيم حاوية الشجرة
-  treeContainer.innerHTML = '';
-  
-  // 3. إنشاء صفوف شجرة جديدة مع التفرعات المناسبة
-  const generations = organizeByRelations(peopleData);
-  
-  // 4. إنشاء كل صف من الشجرة
-  generations.forEach((generation, index) => {
-    const rowDiv = document.createElement('div');
-    rowDiv.className = 'tree-row safari-fixed';
-    rowDiv.dataset.level = index;
-    
-    // إضافة أنماط CSS مخصصة لكل صف
-    rowDiv.style.display = 'flex';
-    rowDiv.style.flexDirection = 'row';
-    rowDiv.style.flexWrap = 'wrap';
-    rowDiv.style.justifyContent = 'center';
-    rowDiv.style.gap = '15px';
-    rowDiv.style.marginBottom = '30px';
-    rowDiv.style.position = 'relative';
-    rowDiv.style.zIndex = (100 - index); // زيادة z-index للصفوف العلوية
-    
-    // إضافة العناصر إلى الصف
-    generation.forEach(personData => {
-      const originalCard = peopleData.find(p => p.id === personData.id)?.element;
-      if (originalCard) {
-        rowDiv.appendChild(originalCard.cloneNode(true));
-      }
-    });
-    
-    treeContainer.appendChild(rowDiv);
-  });
-  
-  // 5. إعادة إضافة خطوط الاتصال
-  setTimeout(() => {
-    addSafariCompatibleConnections(peopleData);
-  }, 100);
-}
-
-// إعادة بناء الشجرة باستخدام تخطيط متوافق
-function rebuildTreeWithCompatibleLayout() {
-  // الحصول على البيانات
-  const people = window.lineage || []; // استخدام البيانات العالمية إذا كانت متوفرة
-  if (people.length === 0) return;
-  
-  // تنظيم البيانات
-  const generations = organizeGenerationsManually(people);
-  const treeContainer = document.querySelector('.svg-container');
-  if (!treeContainer) return;
-  
-  // إنشاء حاوية جديدة
-  treeContainer.innerHTML = '';
-  treeContainer.className = 'family-tree-container';
-  
-  // إضافة الإطار الزخرفي
-  const ornamentalFrame = document.createElement('div');
-  ornamentalFrame.className = 'ornamental-frame';
-  treeContainer.appendChild(ornamentalFrame);
-  
-  // إضافة العنوان
-  const title = document.createElement('h3');
-  title.textContent = "نسب النبي محمد ﷺ";
-  title.style.textAlign = 'center';
-  title.style.margin = '15px 0 30px';
-  treeContainer.appendChild(title);
-  
-  // إنشاء حاوية الشجرة
-  const newTreeContainer = document.createElement('div');
-  newTreeContainer.className = 'tree-container safari-compatible';
-  treeContainer.appendChild(newTreeContainer);
-  
-  // إضافة أنماط خاصة للحاوية
-  newTreeContainer.style.display = 'flex';
-  newTreeContainer.style.flexDirection = 'column';
-  newTreeContainer.style.gap = '25px';
-  newTreeContainer.style.alignItems = 'center';
-  
-  // إضافة كل جيل كصف مستقل
-  generations.forEach((gen, index) => {
-    const row = document.createElement('div');
-    row.className = 'tree-row safari-compatible';
-    row.dataset.level = index;
-    
-    // أنماط الصف
-    row.style.display = 'flex';
-    row.style.flexDirection = 'row';
-    row.style.flexWrap = 'wrap';
-    row.style.justifyContent = 'center';
-    row.style.gap = '15px';
-    row.style.width = '100%';
-    
-    // إضافة بطاقات الأشخاص
-    gen.forEach(person => {
-      const card = createPersonCard(person);
-      row.appendChild(card);
-    });
-    
-    newTreeContainer.appendChild(row);
-  });
-  
-  // إضافة خطوط الاتصال المتوافقة
-  setTimeout(() => {
-    addSafariCompatibleConnections2(people);
-  }, 200);
-}
-
-// تنظيم البيانات يدوياً للتوافق مع Safari
-function organizeGenerationsManually(people) {
-  // تعريف الأجيال يدوياً للتأكد من الترتيب الصحيح
-  const generations = [
-    ['muhammad'], // الجيل الأول (محمد ﷺ)
-    ['abdullah'], // الجيل الثاني (عبد الله)
-    ['abdulmutalib', 'amina'], // الجيل الثالث (عبد المطلب وآمنة)
-    ['hashim', 'wahb'], // الجيل الرابع وهكذا...
-    ['abdmanaf', 'abdmanafzuhri'],
-    ['qusai', 'zuhrah'],
-    // أضف المزيد من الأجيال حسب الحاجة
+    // صف 8 وما بعده: استكمال النسب في المنتصف
+    { id: "murrah", name: "مرة", title: "جد النبي السادس", row: 7, position: 0, type: "father" },
+    { id: "kaab", name: "كعب", title: "جد النبي السابع", row: 8, position: 0, type: "father" },
+    { id: "luay", name: "لؤي", title: "جد النبي الثامن", row: 9, position: 0, type: "father" },
+    { id: "ghalib", name: "غالب", title: "جد النبي التاسع", row: 10, position: 0, type: "father" },
+    { id: "fihr", name: "فهر", title: "جد النبي العاشر (قريش)", row: 11, position: 0, type: "father" },
+    { id: "malik", name: "مالك", title: "جد النبي الحادي عشر", row: 12, position: 0, type: "father" },
+    { id: "alnadr", name: "النضر", title: "جد النبي الثاني عشر", row: 13, position: 0, type: "father" },
+    { id: "kinanah", name: "كنانة", title: "جد النبي الثالث عشر", row: 14, position: 0, type: "father" },
+    { id: "khuzaimah", name: "خزيمة", title: "جد النبي الرابع عشر", row: 15, position: 0, type: "father" },
+    { id: "mudrikah", name: "مدركة", title: "جد النبي الخامس عشر", row: 16, position: 0, type: "father" },
+    { id: "ilyas", name: "إلياس", title: "جد النبي السادس عشر", row: 17, position: 0, type: "father" },
+    { id: "mudar", name: "مضر", title: "جد النبي السابع عشر", row: 18, position: 0, type: "father" },
+    { id: "nizar", name: "نزار", title: "جد النبي الثامن عشر", row: 19, position: 0, type: "father" },
+    { id: "maad", name: "معد", title: "جد النبي التاسع عشر", row: 20, position: 0, type: "father" },
+    { id: "adnan", name: "عدنان", title: "جد النبي العشرون", row: 21, position: 0, type: "father" }
   ];
   
-  // الحصول على البيانات الكاملة لكل اسم
-  return generations.map(gen => {
-    return gen.map(id => {
-      return people.find(p => p.id === id) || { id, name: id, title: '' };
-    });
+  // ترتيب البيانات حسب الصفوف
+  const rows = {};
+  treeData.forEach(person => {
+    if (!rows[person.row]) rows[person.row] = [];
+    rows[person.row].push(person);
   });
-}
-
-// تنظيم البيانات بناءً على علاقات القرابة
-function organizeByRelations(peopleData) {
-  const generations = [];
-  const addedPeople = new Set();
   
-  // ابدأ بمحمد ﷺ
-  const muhammad = peopleData.find(p => p.id === 'muhammad');
-  if (!muhammad) return generations;
-  
-  // الجيل الأول
-  generations.push([muhammad]);
-  addedPeople.add(muhammad.id);
-  
-  // استخدام BFS لتتبع الشجرة
-  let currentLevel = 0;
-  while (currentLevel < generations.length) {
-    const nextGeneration = [];
+  // إنشاء الشجرة كعناصر HTML
+  Object.keys(rows).sort((a, b) => a - b).forEach(rowIndex => {
+    // إنشاء صف جديد
+    const rowElement = document.createElement('div');
+    rowElement.className = 'tree-row';
+    rowElement.style.display = 'flex';
+    rowElement.style.justifyContent = 'center';
+    rowElement.style.alignItems = 'center';
+    rowElement.style.margin = '20px 0';
+    rowElement.style.width = '100%';
+    rowElement.style.textAlign = 'center';
     
-    // لكل شخص في المستوى الحالي
-    for (const person of generations[currentLevel]) {
-      // ابحث عن الوالدين
-      const parents = peopleData.filter(p => p.parent === person.id && !addedPeople.has(p.id));
+    // ترتيب العناصر في الصف
+    const sortedPeople = rows[rowIndex].sort((a, b) => a.position - b.position);
+    
+    sortedPeople.forEach(person => {
+      // إنشاء بطاقة شخص
+      const card = document.createElement('div');
       
-      // أضفهم إلى الجيل التالي إذا تم العثور عليهم
-      if (parents.length > 0) {
-        nextGeneration.push(...parents);
-        parents.forEach(p => addedPeople.add(p.id));
+      // تعيين الفئة بناءً على النوع
+      card.className = 'person-card';
+      if (person.type === 'prophet') {
+        card.classList.add('muhammad');
+      } else if (person.type === 'mother') {
+        card.classList.add('mother-line');
+      } else {
+        card.classList.add('father-line');
       }
-    }
+      
+      // تحديد الموقع
+      const positionClass = person.position === 0 ? 'center' : 
+                            person.position < 0 ? 'left' : 'right';
+      card.classList.add(`position-${positionClass}`);
+      card.setAttribute('data-id', person.id);
+      
+      // إضافة المحتوى
+      card.innerHTML = `
+        <div class="person-name">${person.name}</div>
+        <div class="person-title">${person.title}</div>
+        <span class="person-decoration decoration-top-right">۞</span>
+        <span class="person-decoration decoration-bottom-left">۞</span>
+      `;
+      
+      // إضافة معالج النقر
+      card.addEventListener('click', function(event) {
+        event.stopPropagation();
+        showPersonInfo(person, card);
+      });
+      
+      // إضافة البطاقة إلى الصف
+      rowElement.appendChild(card);
+    });
     
-    // إذا كان هناك جيل تالي، أضفه
-    if (nextGeneration.length > 0) {
-      generations.push(nextGeneration);
-    }
+    // إضافة الصف إلى الحاوية
+    container.appendChild(rowElement);
+  });
+}
+
+// عرض معلومات الشخص
+function showPersonInfo(person, element) {
+  const tooltip = document.getElementById('tooltip');
+  
+  if (!tooltip) return;
+  
+  // تنظيف التلميح
+  tooltip.innerHTML = '';
+  
+  // إنشاء رأس التلميح
+  const header = document.createElement('div');
+  header.className = 'tooltip-header';
+  tooltip.appendChild(header);
+  
+  // إضافة عنوان التلميح
+  const title = document.createElement('h3');
+  title.id = 'tooltip-title';
+  title.textContent = person.name;
+  header.appendChild(title);
+  
+  // إضافة زر الإغلاق
+  const closeButton = document.createElement('span');
+  closeButton.className = 'close-tooltip';
+  closeButton.innerHTML = '×';
+  closeButton.addEventListener('click', function(e) {
+    e.stopPropagation();
+    tooltip.style.display = 'none';
+  });
+  header.appendChild(closeButton);
+  
+  // إضافة محتوى التلميح
+  const content = document.createElement('div');
+  content.id = 'tooltip-info';
+  tooltip.appendChild(content);
+  
+  // النص الخاص بكل شخص
+  const personBios = {
+    muhammad: 'محمد بن عبد الله، خاتم الأنبياء والمرسلين، ولد في مكة المكرمة عام الفيل (571 م تقريباً).',
+    abdullah: 'عبد الله بن عبد المطلب، والد النبي محمد ﷺ، توفي قبل مولد النبي ﷺ بأشهر.',
+    amina: 'آمنة بنت وهب، أم النبي محمد ﷺ، توفيت والنبي في سن السادسة.',
+    abdulmutalib: 'عبد المطلب بن هاشم، جد النبي محمد ﷺ لأبيه وكافله بعد وفاة أمه.',
+    hashim: 'هاشم بن عبد مناف، جد النبي محمد ﷺ الثاني، ومنه ينسب الهاشميون.',
+    wahb: 'وهب بن عبد مناف الزهري، والد آمنة أم النبي محمد ﷺ.',
+    abdmanaf: 'عبد مناف بن قصي، جد النبي محمد ﷺ الثالث، كان من سادات قريش.',
+    abdmanafzuhri: 'عبد مناف الزهري، أبو وهب والد آمنة أم النبي ﷺ.',
+    qusai: 'قصي بن كلاب، جد النبي محمد ﷺ الرابع، كان مجمع قريش.',
+    zuhrah: 'زهرة بن كلاب، جد النبي محمد ﷺ من جهة أمه، وأخو قصي بن كلاب.',
+    kilab: 'كلاب بن مرة، جد النبي محمد ﷺ الخامس، وهو الجد المشترك بين فرعي الأب والأم.',
+    murrah: 'مرة بن كعب، جد النبي محمد ﷺ السادس.',
+    kaab: 'كعب بن لؤي، جد النبي محمد ﷺ السابع.',
+    luay: 'لؤي بن غالب، جد النبي محمد ﷺ الثامن.',
+    ghalib: 'غالب بن فهر، جد النبي محمد ﷺ التاسع.',
+    fihr: 'فهر بن مالك، جد النبي محمد ﷺ العاشر، ويعرف بقريش وإليه تنسب القبيلة.',
+    malik: 'مالك بن النضر، جد النبي محمد ﷺ الحادي عشر.',
+    alnadr: 'النضر بن كنانة، جد النبي محمد ﷺ الثاني عشر.',
+    kinanah: 'كنانة بن خزيمة، جد النبي محمد ﷺ الثالث عشر.',
+    khuzaimah: 'خزيمة بن مدركة، جد النبي محمد ﷺ الرابع عشر.',
+    mudrikah: 'مدركة بن إلياس، جد النبي محمد ﷺ الخامس عشر.',
+    ilyas: 'إلياس بن مضر، جد النبي محمد ﷺ السادس عشر.',
+    mudar: 'مضر بن نزار، جد النبي محمد ﷺ السابع عشر.',
+    nizar: 'نزار بن معد، جد النبي محمد ﷺ الثامن عشر.',
+    maad: 'معد بن عدنان، جد النبي محمد ﷺ التاسع عشر.',
+    adnan: 'عدنان، جد النبي محمد ﷺ العشرون، وينتهي إليه نسب العرب العدنانية.'
+  };
+  
+  content.textContent = personBios[person.id] || `${person.name}: أحد أجداد النبي محمد ﷺ الكرام.`;
+  
+  // تحديد موقع التلميح
+  tooltip.style.display = 'block';
+  const isMobile = window.matchMedia("(max-width: 767px)").matches;
+  
+  if (isMobile) {
+    // على الجوال، عرض التلميح في وسط الشاشة
+    tooltip.style.position = 'fixed';
+    tooltip.style.top = '50%';
+    tooltip.style.left = '50%';
+    tooltip.style.transform = 'translate(-50%, -50%)';
+    tooltip.style.width = '85%';
+    tooltip.style.maxWidth = '300px';
+    tooltip.style.zIndex = '1000';
+  } else {
+    // على سطح المكتب، عرض التلميح بالقرب من البطاقة
+    const cardRect = element.getBoundingClientRect();
+    const tooltipWidth = 320;
     
-    currentLevel++;
+    tooltip.style.position = 'absolute';
+    tooltip.style.zIndex = '1000';
+    tooltip.style.width = `${tooltipWidth}px`;
+    
+    // حساب موقع التلميح (أسفل البطاقة مباشرة)
+    const top = cardRect.bottom + window.scrollY + 10;
+    const left = cardRect.left + (cardRect.width / 2) - (tooltipWidth / 2) + window.scrollX;
+    
+    tooltip.style.top = `${top}px`;
+    tooltip.style.left = `${left}px`;
+    tooltip.style.transform = 'none';
   }
-  
-  return generations;
-}
-
-// البحث عن هوية الوالد
-function findParentId(personId) {
-  // الوصول إلى بيانات الأنساب (يفترض أنها محملة في النطاق العام)
-  const lineageData = window.lineage || [];
-  if (!lineageData.length) return null;
-  
-  const person = lineageData.find(p => p.id === personId);
-  return person ? person.father : null;
-}
-
-// إضافة خطوط اتصال متوافقة مع Safari
-function addSafariCompatibleConnections(peopleData) {
-  const treeContainer = document.querySelector('.tree-container') || document.querySelector('.family-tree-container');
-  if (!treeContainer) return;
-  
-  // إزالة أي خطوط موجودة مسبقاً
-  document.querySelectorAll('.connection-line').forEach(el => el.remove());
-  
-  // لكل شخص، أضف خطاً يربطه بوالده
-  peopleData.forEach(person => {
-    if (!person.parent) return;
-    
-    const childCard = document.querySelector(`.person-card[data-id="${person.id}"]`);
-    const parentCard = document.querySelector(`.person-card[data-id="${person.parent}"]`);
-    
-    if (childCard && parentCard) {
-      addSimpleConnectionLine(childCard, parentCard, treeContainer);
-    }
-  });
-}
-
-// إضافة خطوط اتصال متوافقة مع Safari (الإصدار 2)
-function addSafariCompatibleConnections2(people) {
-  const treeContainer = document.querySelector('.tree-container') || document.querySelector('.family-tree-container');
-  if (!treeContainer) return;
-  
-  // إزالة أي خطوط موجودة مسبقاً
-  document.querySelectorAll('.connection-line').forEach(el => el.remove());
-  
-  // إنشاء خريطة للوصول السريع
-  const peopleMap = {};
-  people.forEach(person => {
-    peopleMap[person.id] = person;
-  });
-  
-  // إضافة خطوط لكل علاقة والد-ابن
-  people.forEach(person => {
-    if (!person.father) return;
-    
-    const childCard = document.querySelector(`.person-card[data-id="${person.id}"]`);
-    const parentCard = document.querySelector(`.person-card[data-id="${person.father}"]`);
-    
-    if (childCard && parentCard) {
-      addSimpleConnectionLine(childCard, parentCard, treeContainer);
-    }
-  });
-}
-
-// إضافة خط اتصال بسيط بين بطاقتين
-function addSimpleConnectionLine(childCard, parentCard, container) {
-  const childRect = childCard.getBoundingClientRect();
-  const parentRect = parentCard.getBoundingClientRect();
-  const containerRect = container.getBoundingClientRect();
-  
-  // تحويل الإحداثيات إلى نظام إحداثيات الحاوية
-  const childTop = childRect.top - containerRect.top + container.scrollTop;
-  const childLeft = childRect.left - containerRect.left + container.scrollLeft;
-  const parentTop = parentRect.top - containerRect.top + container.scrollTop;
-  const parentLeft = parentRect.left - containerRect.left + container.scrollLeft;
-  
-  // إنشاء خط بسيط مستقيم
-  const line = document.createElement('div');
-  line.className = 'connection-line';
-  line.style.position = 'absolute';
-  line.style.backgroundColor = 'rgba(212, 175, 55, 0.6)';
-  line.style.zIndex = '0';
-  
-  // حساب طول واتجاه الخط
-  const length = Math.sqrt(Math.pow(parentLeft - childLeft, 2) + Math.pow(parentTop - childTop, 2));
-  const angle = Math.atan2(parentTop - childTop, parentLeft - childLeft) * (180 / Math.PI);
-  
-  // تعيين خصائص الخط
-  line.style.width = `${length}px`;
-  line.style.height = '2px';
-  line.style.transformOrigin = '0 0';
-  line.style.transform = `translate(${childLeft + childRect.width/2}px, ${childTop + childRect.height/2}px) rotate(${angle}deg)`;
-  
-  container.appendChild(line);
 }
