@@ -8,6 +8,120 @@
   <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap" rel="stylesheet">
   <script src="assets/js/simplified-audio.js" defer></script>
   <script src="assets/js/updated-quiz-questions.js" defer></script>
+  <style>
+    /* أضف هذه الأنماط إلى قسم style الحالي */
+    
+    /* تأثيرات الإجابات الصحيحة والخاطئة */
+    .answer-choice.correct {
+      background-color: rgba(76, 175, 80, 0.2) !important;
+      border-color: #4CAF50 !important;
+      color: #2E7D32 !important;
+      transition: all 0.3s ease;
+    }
+    
+    .answer-choice.incorrect {
+      background-color: rgba(244, 67, 54, 0.2) !important;
+      border-color: #F44336 !important;
+      color: #C62828 !important;
+      transition: all 0.3s ease;
+    }
+    
+    /* تعديل حجم وهوامش الخيارات لتناسب 3 خيارات */
+    .answer-choice {
+      padding: 18px 15px;
+      margin: 15px 0;
+      font-size: 17px;
+    }
+
+    /* تنسيقات الأزرار الدائرية للخيارات */
+    .answer-choice {
+      position: relative;
+      padding: 18px 15px 18px 50px; /* زيادة المساحة على اليسار لإضافة الأيقونة */
+      margin: 15px 0;
+      font-size: 17px;
+      background-color: #ffffff;
+      border: 1px solid #d1c5a8;
+      border-radius: 15px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      transition: all 0.2s ease;
+    }
+    
+    /* إضافة الأيقونة الدائرية قبل النص */
+    .answer-choice::before {
+      content: "";
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: 1px solid #D4AF37;
+      background-color: transparent;
+    }
+    
+    /* تأثير التحويم */
+    .answer-choice:hover {
+      background-color: rgba(212, 175, 55, 0.1);
+    }
+    
+    /* تأثير الضغط */
+    .answer-choice.pressed {
+      transform: scale(0.98);
+      background-color: rgba(212, 175, 55, 0.2);
+    }
+    
+    /* تأثيرات الإجابات الصحيحة والخاطئة */
+    .answer-choice.correct {
+      background-color: rgba(76, 175, 80, 0.2) !important;
+      border-color: #4CAF50 !important;
+      color: #2E7D32 !important;
+    }
+    
+    .answer-choice.incorrect {
+      background-color: rgba(244, 67, 54, 0.2) !important;
+      border-color: #F44336 !important;
+      color: #C62828 !important;
+    }
+    
+    /* تعديل شكل الأيقونة عند الإجابة الصحيحة */
+    .answer-choice.correct::before {
+      background-color: #4CAF50;
+      border-color: #4CAF50;
+    }
+    
+    /* تعديل شكل الأيقونة عند الإجابة الخاطئة */
+    .answer-choice.incorrect::before {
+      background-color: #F44336;
+      border-color: #F44336;
+    }
+    
+    /* إضافة علامة صح داخل الأيقونة للإجابة الصحيحة */
+    .answer-choice.correct::after {
+      content: "✓";
+      position: absolute;
+      left: 21px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    
+    /* إضافة علامة خطأ داخل الأيقونة للإجابة الخاطئة */
+    .answer-choice.incorrect::after {
+      content: "×";
+      position: absolute;
+      left: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body class="no-select">
   <header>
@@ -78,7 +192,7 @@
         document.body.classList.add('no-select');
       }
       
-      // دالة عرض السؤال
+      // استبدل دالة showQuestion الحالية بهذه الدالة
       function showQuestion() {
         const questionData = questions[currentQuestion];
         const questionText = document.getElementById('question-text');
@@ -90,28 +204,46 @@
         // إفراغ حاوية الإجابات
         answersBox.innerHTML = '';
         
-        // نسخ مصفوفة الإجابات وترتيبها عشوائيًا
-        const answers = questionData.a.slice();
-        shuffleArray(answers);
+        // نضمن أن لدينا الإجابة الصحيحة
+        const correctAnswer = questionData.a[questionData.correct];
         
-        // إنشاء أزرار الإجابات
-        answers.forEach(function(answer, index) {
-          const button = document.createElement('button');
-          button.className = 'clickable';
-          button.textContent = answer;
-          button.addEventListener('click', function() {
-            // التحقق من الإجابة
-            checkAnswer(answer, questionData);
-          });
-          answersBox.appendChild(button);
+        // نحصل على مصفوفة من جميع الإجابات الخاطئة
+        const incorrectAnswers = questionData.a.filter((answer, index) => index !== questionData.correct);
+        
+        // اختيار إجابتين خاطئتين عشوائياً
+        shuffleArray(incorrectAnswers);
+        const selectedIncorrectAnswers = incorrectAnswers.slice(0, 2);
+        
+        // المصفوفة النهائية تحتوي على 3 إجابات فقط: صحيحة واحدة وخاطئتين
+        const finalAnswers = [correctAnswer, ...selectedIncorrectAnswers];
+        
+        // ترتيب الإجابات النهائية عشوائيًا
+        shuffleArray(finalAnswers);
+        
+        // إنشاء عناصر للإجابات
+        finalAnswers.forEach(function(answer) {
+          const answerDiv = document.createElement('div');
+          answerDiv.className = 'answer-choice';
+          answerDiv.textContent = answer;
+          
+          // إضافة مستمعات الأحداث المخصصة للأجهزة اللمسية والماوس
+          setupAnswerEventListeners(answerDiv, answer, questionData);
+          
+          // إضافة عنصر الإجابة إلى الحاوية
+          answersBox.appendChild(answerDiv);
         });
         
         // إعادة ضبط العداد التنازلي
         resetTimer();
       }
-      
-      // دالة التحقق من الإجابة
-      function checkAnswer(selectedAnswer, questionData) {
+
+      // تعديل دالة checkAnswer لضمان الانتقال إلى صفحة النتائج بعد السؤال الأخير
+      function checkAnswer(selectedAnswer, questionData, element) {
+        // إزالة أي تأثيرات متبقية من العناصر
+        document.querySelectorAll('.answer-choice').forEach(choice => {
+          choice.classList.remove('pressed');
+        });
+        
         const correctAnswer = questionData.a[questionData.correct];
         const isCorrect = selectedAnswer === correctAnswer;
         
@@ -142,33 +274,29 @@
           });
         }
         
-        // الانتقال إلى السؤال التالي أو إنهاء الاختبار
-        currentQuestion++;
-        
-        if (currentQuestion < questions.length) {
-          showQuestion();
-        } else {
-          endQuiz();
-        }
+        // تأخير أطول لإظهار الإجابة الصحيحة والخاطئة
+        setTimeout(() => {
+          // مهم: زيادة عداد الأسئلة قبل التحقق 
+          currentQuestion++;
+          
+          // التحقق إذا كان هذا هو السؤال الأخير
+          if (currentQuestion >= questions.length) {
+            // انتهاء الاختبار إذا كان هذا السؤال الأخير
+            endQuiz();
+          } else {
+            // انتقال للسؤال التالي إذا كانت هناك أسئلة أخرى
+            showQuestion();
+          }
+        }, 1000);  // تأخير لمدة ثانية لمشاهدة الإجابة الصحيحة
       }
-      
-      // دالة إنهاء الاختبار
-      function endQuiz() {
-        // إيقاف العداد التنازلي
-        clearInterval(timer);
-        
-        // إخفاء حاوية المؤقت
-        document.querySelector('.timer-container').style.display = 'none';
-        
-        // إخفاء حاوية الأسئلة وإظهار حاوية النتيجة
-        document.getElementById('question-container').style.display = 'none';
-        document.getElementById('result-container').style.display = 'block';
-        
-        // عرض النتيجة
-        const resultText = document.getElementById('result-text');
-        const percentage = Math.round((score / questions.length) * 100);
-        
-        resultText.textContent = `لقد حصلت على ${score} من ${questions.length} (${percentage}%)`;
+
+      // استبدل دالة setupAnswerEventListeners الحالية بهذه الدالة
+      function setupAnswerEventListeners(element, answer, questionData) {
+        // مستمع لبدء اللمس - إضافة تأثير الضغط
+        element.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          this.classList.add('pressed');
+        }, { passive: false });
         
         // مستمع لانتهاء اللمس - إزالة تأثير الضغط وتنفيذ الإجراء
         element.addEventListener('touchend', function(e) {
@@ -267,7 +395,7 @@
         return array;
       }
       
-      // تصحيح دالة endQuiz للتأكد من عرض النتيجة بشكل صحيح
+      // تصحيح دالة endQuiz للتأكد من عرض النتيجة بشكل صحيح وعمل زر إعادة الاختبار
       function endQuiz() {
         console.log("تم إنهاء الاختبار - النتيجة: " + score + " من " + questions.length);
 
@@ -310,6 +438,33 @@
             resultButtons.appendChild(certificateButton);
           }
         }
+        
+        // إضافة مستمع حدث لزر إعادة الاختبار
+        const retryButton = document.getElementById('retry-button');
+        if (retryButton) {
+          // إزالة أي مستمعات سابقة لتجنب التكرار
+          retryButton.replaceWith(retryButton.cloneNode(true));
+          
+          // إعادة الحصول على العنصر بعد الاستبدال
+          const newRetryButton = document.getElementById('retry-button');
+          
+          // إضافة المستمع الجديد
+          newRetryButton.addEventListener('click', function() {
+            // إعادة تعيين متغيرات الاختبار
+            currentQuestion = 0;
+            score = 0;
+            
+            // إعادة إظهار حاوية المؤقت
+            document.querySelector('.timer-container').style.display = 'flex';
+            
+            // إخفاء حاوية النتيجة وإظهار حاوية الأسئلة
+            document.getElementById('result-container').style.display = 'none';
+            document.getElementById('question-container').style.display = 'block';
+            
+            // إعادة تشغيل الاختبار
+            initQuiz();
+          });
+        }
       }
 
       // بدء الاختبار
@@ -334,6 +489,34 @@
           }, 10);
         }, false);
       }
+    });
+
+    // إضافة للتأكد من أن العناصر موجودة في الصفحة
+    document.addEventListener('DOMContentLoaded', function() {
+      // التحقق من وجود العناصر الرئيسية
+      console.log("حاوية الأسئلة موجودة؟", !!document.getElementById('question-container'));
+      console.log("حاوية النتيجة موجودة؟", !!document.getElementById('result-container'));
+      
+      // إضافة مراقب للتغييرات في قيمة currentQuestion
+      let origCurrentQuestionDescriptor = Object.getOwnPropertyDescriptor(window, 'currentQuestion');
+      let currentQuestionValue = currentQuestion;
+      
+      Object.defineProperty(window, 'currentQuestion', {
+        get: function() {
+          return currentQuestionValue;
+        },
+        set: function(newValue) {
+          console.log("تغيير قيمة currentQuestion من", currentQuestionValue, "إلى", newValue);
+          console.log("عدد الأسئلة:", questions.length);
+          
+          if (newValue >= questions.length) {
+            console.log("تم الوصول إلى نهاية الأسئلة - يجب إظهار النتيجة");
+          }
+          
+          currentQuestionValue = newValue;
+        },
+        configurable: true
+      });
     });
   </script>
 </body>
